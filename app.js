@@ -5,10 +5,8 @@ const path = require('path');
 const ejs = require('ejs');
 var bodyParser = require('body-parser') 
 const cookieParser = require("cookie-parser");
-const sessions = require('express-session');
-const {authorize} = require('./util');
-const { Console } = require('console');
-
+var session = require('express-session');
+const {authorize, encode, decode, getJSON} = require('./util');
 
 
 const app = express()
@@ -27,7 +25,7 @@ app.use(bodyParser.urlencoded({
   }));
 
   //STORER SESSION DATA
-app.use(sessions({
+app.use(session({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized:true,
     cookie: { maxAge: 1 },
@@ -45,23 +43,37 @@ app.listen(app.get("port"), () => {
 //nodemon app.js
 // http://localhost:8080/ 
 
+
+/* =================== SIGN IN =================== */
 app.get(["/", "/signin"], 
 (req, res) => {
-	session.loggedIn = false;
-	res.render("signin", 
-	{
-		data: 'test', 
-		workers: 
-		getJSON('data/workers.json')
-		.map((item) => {
-		return 
+
+	if (!session.loggedIn) {
+		session.loggedIn = false;
+
+		// GET WORKERS
+		workers = getJSON('data/workers.json')
+		.map((item) => { return {
+			"firstname": item.firstname, 
+			"lastname": item.lastname
+		}});
+		
+		res.render("signin", 
 		{
-			firstname: item.firstname, 
-			lastname: item.lastname
-			}
+			data: 'test', 
+			workers: JSON.stringify(workers)
+		});
+	}
+	else {
+		res.render("landing", {
+			user : session.user
 		})
 	}
-})
+});
+	
+
+
+/* =================== VALIDATE  =================== */
 
 app.post('/validate', 
 (req, res) => {
@@ -70,15 +82,15 @@ app.post('/validate',
 
 	//name-value: First Last
 	var user = authorize({id, name});
-	console.log("Authprize return: ", user)
 	if(user) {
 
 		req.session.loggedIn = true;
-		req.session.userEID = eid;
+		session.userEID = user.eid;
 
 		console.log("LOGGED IN:", req.session.loggedIn);
-
-		res.redirect("/user/availability")
+		console.log ("SESSION DATA: \n", session)
+		encodedUser = encode(user)
+		res.redirect("/user/landing?user="+ encodedUser)
 	}
 	else {
 		req.session.loggedIn = false;
@@ -95,19 +107,26 @@ app.post('/validate',
 function requireLogin(req, res, next) {
 	console.log("Require Login: ", session.loggedIn);
 	if(session.loggedIn){
-		console.log("in")
+		// console.log("in")
 		next()
 	}
 	else {
-		console.log("out")
+		// console.log("out")
 		res.redirect("/")
 	}
 }
+
 // //middle ware - require login for all routes starting with /user/
 app.all(["/user/*", "/admin/*"], requireLogin)
 
 app.get("/user/availability", (req, res) => {
 	res.render("log", {userEID: session.userEID})
+})
+app.get("/*/landing",  (req, res) => {
+	console.log(req.query)
+	res.render("landing", {
+		user: req.query.user,
+	})
 })
 
 // app.post('/signin', function (req, res) {

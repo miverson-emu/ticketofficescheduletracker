@@ -1,0 +1,101 @@
+<html>
+
+<head>
+	<script>
+
+		// STORE IN APP JSON 
+		admin_menu = [
+			
+			{
+				"title": "Events", 
+				"description": "View and Edit Event Information", 
+				"href": "#"
+			},
+			{
+				"title": "Availability", 
+				"description": "View Workers avaialable for all events", 
+				"href": "#"
+			},
+			{
+				"title": "Workers", 
+				"description": "View and Modify Worker Information",
+				"href": "#"
+			}
+		]
+
+		worker_menu = [
+			{
+				"title": "View Details", 
+				"description": "View and Edit your information",
+				"href" : "#"
+			}, 
+			{
+				"title": "Log Availability", 
+				"description": "View and Modify your event availability", 
+				"href" : "#"
+			}
+		]
+		
+		function populateMenu(user) {
+			role = user.role;
+
+			const menu_list = document.getElementById("menu")
+			if (role == "student") {
+				worker_menu.forEach(item => {
+					menu_list.innerHTML+= listItem(item)	
+				});
+			}
+			else if (role == "admin") {
+				admin_menu.forEach(item => {
+					menu_list.innerHTML+= listItem(item)	
+				});
+			}
+		}
+
+		function listItem(item) {
+			return "<li><a href = '" + item.href + "'>" + item.title + " (" + item.description + ")</a></li>"
+		}
+
+		function getUser() {
+			fetch("../data/workers.json")
+			.then ((res) => {
+				console.log(res);
+			})
+		}
+	
+		
+
+	</script>
+
+
+</head>
+
+<body>
+	<% var user = user %>
+<script>
+	window.onload = () => {
+			user = JSON.parse(atob("<%= user %>"));
+			console.log(user)
+			populateMenu(user)
+
+			document.getElementById("role").innerHTML = user.role;
+			document.getElementById("name").innerHTML = user.firstname;
+		}
+</script>
+
+	<div>
+		<h2>
+			Welcome <span id = "name"></span>!
+		</h2>
+		<div id = "role"></div>
+	</div>
+	
+
+	<br>
+	<div>
+		<ul id = "menu">
+		</ul>
+	</div>
+
+</body>
+</html>

@@ -9,19 +9,29 @@ function authorize(signin){
 
 	//GET USERS FROM FILE
 
-	const user_info = 	getJSON("./data/students.json");
-	console.log("INFO: ", user_info);
+	const user_info = 	getJSON("./data/workers.json");
+	// console.log("INFO: ", user_info);
 
-	console.log("Authorizing ", signin);
+	// console.log("Authorizing ", sIgnin);
 
 	authorized = user_info.find((item) => item.eid == signin.id)
 
-	console.log("Authorized: ", authorized)
+	console.log("Authorized: ", authorized.eid)
 
 	return authorized
 	
 }
+
+function encode(obj) {
+	return Buffer.from(JSON.stringify(obj)).toString('base64');
+
+}
+
+function decode(str) {
+	return JSON.parse(Buffer.from(str, 'base64').toString());
+
+}
 module.exports = authorize
 
 
-module.exports = {getJSON, authorize};
+module.exports = {getJSON, authorize, encode, decode};

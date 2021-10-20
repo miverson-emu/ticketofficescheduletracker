@@ -3,8 +3,9 @@
 		<script>
 
 			function populateList(data) {
-				data.map(item => {
-					return selectOption(item.firstname + " " + item.lastname, item.lastname + ", " + item.firstname)
+				const selector = document.getElementById("worker-name")
+				data.forEach(item => {
+					selector.innerHTML+= selectOption(item.firstname + " " + item.lastname, item.lastname + ", " + item.firstname)
 				})
 			}
 
@@ -13,7 +14,7 @@
 			}
 
 			window.onload = () => {
-				populateList(<%= worker%>)
+				populateList(<%- workers%>)
 			}
 		</script>
 	</head>
@@ -21,7 +22,7 @@
 <body>
 <h1><%= data %></h1>
 <form action = "/validate" method = "POST">
-	<select name = 'name'>
+	<select name = 'name' id = "worker-name">
 		<option disabled selected> -- Select your Name</option>
 	</select>
 
