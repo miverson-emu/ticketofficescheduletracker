@@ -1,9 +1,14 @@
 const fs = require('fs')
-
+// 
 //DOCUMENTS
 function getJSON(path) {
 	return JSON.parse(fs.readFileSync(path, "utf8"))
 }
+
+function writeJSON(path, data) {
+	fs.writeFileSync(path, JSON.stringify(data));
+}
+
 
 function authorize(signin){
 
@@ -22,6 +27,7 @@ function authorize(signin){
 	
 }
 
+
 function encode(obj) {
 	return Buffer.from(JSON.stringify(obj)).toString('base64');
 
@@ -29,9 +35,6 @@ function encode(obj) {
 
 function decode(str) {
 	return JSON.parse(Buffer.from(str, 'base64').toString());
-
 }
-module.exports = authorize
-
-
+global.exports = {getJSON}
 module.exports = {getJSON, authorize, encode, decode};

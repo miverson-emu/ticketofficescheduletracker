@@ -6,7 +6,7 @@ const ejs = require('ejs');
 var bodyParser = require('body-parser') 
 const cookieParser = require("cookie-parser");
 var session = require('express-session');
-const {authorize, encode, decode, getJSON} = require('./util');
+const {authorize, encode, decode, getJSON} = require('./modules/util');
 
 
 const app = express()
@@ -61,7 +61,7 @@ app.get(["/", "/signin"],
 		res.render("signin", 
 		{
 			data: 'test', 
-			workers: JSON.stringify(workers)
+			workers: JSON.stringify(workers, null, 2)
 		});
 	}
 	else {
@@ -78,17 +78,16 @@ app.get(["/", "/signin"],
 app.post('/validate', 
 (req, res) => {
 	var {id, name} = req.body;
-	console.log("FORM:", req.body)
+	// console.log("FORM:", req.body)
 
 	//name-value: First Last
 	var user = authorize({id, name});
 	if(user) {
 
 		req.session.loggedIn = true;
-		session.userEID = user.eid;
+		req.session.userEID = user.eid;
 
-		console.log("LOGGED IN:", req.session.loggedIn);
-		console.log ("SESSION DATA: \n", session)
+		console.log ("Session: \n", req.session)
 		encodedUser = encode(user)
 		res.redirect("/user/landing?user="+ encodedUser)
 	}
@@ -119,15 +118,40 @@ function requireLogin(req, res, next) {
 // //middle ware - require login for all routes starting with /user/
 app.all(["/user/*", "/admin/*"], requireLogin)
 
-app.get("/user/availability", (req, res) => {
+app.get("/student/log", (req, res) => {
+	console.log (session)
 	res.render("log", {userEID: session.userEID})
 })
 app.get("/*/landing",  (req, res) => {
-	console.log(req.query)
+	console.log("User Data: ", req.query)
 	res.render("landing", {
 		user: req.query.user,
 	})
 })
+
+app.get("/f/*",  (req, res) => {
+	path_list = req. _parsedOriginalUrl.pathname.split("/")
+	file_name = path_list.pop()
+	folder_name = path_list.pop()
+	// console.log(file_name, folder_name);
+	res.sendFile(path.join(__dirname, folder_name, file_name))
+})
+
+//GET JSON 
+app.get("/r/getJSON?", (req, res) => {
+	path_list = req. _parsedOriginalUrl.pathname.split("/")
+	data = req.query.data
+	res.send(getJSON(data))
+});
+
+app.post("/w", (req, res) => {
+	const {fileName, fileContents, errorMessage} = req.body;
+	fs.writeFile(fileName, fileContents, (error) => {
+		res.send((error) ? errorMessage : "Success! " + fileName + " updated.");
+	})
+})
+
+
 
 // app.post('/signin', function (req, res) {
 // 	var post = req.body;
@@ -143,7 +167,9 @@ app.get("/*/landing",  (req, res) => {
 
 //FUNCTIONS
 function writeToFile(path, content) {
-	fs.open(path, 'w')
+	fs.write(path, 'w')
 }
+
+
 
 

@@ -1,20 +1,21 @@
 [
-	{
-		"firstname": "Morgan",
-		"lastname": "Iverson",
-		"eid": "E0001",
-		"role": "student", 
-		"eventsAvailable": [
-		"FS1"
-		]
-	}, 
-	{
-		"firstname": "Chris",
-		"lastname": "LaReau", 
-		"eid": "E0002",
-		"role": "admin", 
-		"eventsAvailable": [
-		"FS1"
-		]
-	}
+    {
+        "firstname": "Morgan",
+        "lastname": "Iverson",
+        "eid": "E0001",
+        "role": "student",
+        "eventsAvailable": [
+            "FS0",
+            "FS1"
+        ]
+    },
+    {
+        "firstname": "Chris",
+        "lastname": "LaReau",
+        "eid": "E0002",
+        "role": "admin",
+        "eventsAvailable": [
+            "FS1"
+        ]
+    }
 ]

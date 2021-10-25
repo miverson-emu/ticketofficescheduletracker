@@ -13,14 +13,20 @@
 				return "<option value =" + value  + ">" + display + "</option>"
 			}
 
-			window.onload = () => {
-				populateList(<%- workers%>)
-			}
 		</script>
 	</head>
 
 <body>
-<h1><%= data %></h1>
+
+
+	<% var workers = workers %>
+	<script>
+		window.onload = () => {
+				populateList(<%- workers %>)
+			}
+	</script>
+<h1>EMU Ticket Office Schedule Tracker</h1>
+<h3>Login: </h3>
 <form action = "/validate" method = "POST">
 	<select name = 'name' id = "worker-name">
 		<option disabled selected> -- Select your Name</option>
