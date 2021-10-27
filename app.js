@@ -38,7 +38,7 @@ app.use(session({
 app.use(cookieParser());
 
 app.listen(app.get("port"), () => {
-	console.log("App is running on port " + app.get("port"))
+	console.log("App is running on http://localhost:" + app.get("port"))
 })
 
 //kill -9 $(lsof -t -i:8000)
@@ -54,6 +54,7 @@ app.get(["/", "/signin"],
 	if (!session.loggedIn) {
 		session.loggedIn = false;
 
+		console.log(session.signInError)
 		// GET WORKERS
 		workers = getJSON('data/workers.json')
 		.map((item) => { return {
@@ -64,13 +65,14 @@ app.get(["/", "/signin"],
 		res.render("signin", 
 		{
 			data: 'test', 
-			workers: JSON.stringify(workers, null, 2)
+			workers: JSON.stringify(workers, null, 2), 
+			error:session.signInError
 		});
 	}
 	else {
-		getCurrentlyLoggedInUser().then( (currentUser) => {
-			res.redirect("/" + currentUser.role + "/landing")
-		})
+		workers = getJSON("data/workers.json")
+		role = workers.find((worker) => worker.eid == session.userEID)["role"]
+		res.redirect("/" + role + "/landing")
 	}
 });
 	
@@ -92,16 +94,16 @@ app.post('/validate',
 		// console.log ("Session: \n", req.session)
 		encodedUser = encode(user)
 		res.redirect("/" + user.role + "/landing")
+		session = req.session;
+		session.signInError = ""
+
 	}
 	else {
 		req.session.loggedIn = false;
-
-		res.render("accessnotice", 
-		{
-			access: "ACCESS DENIED"
-		})	
+		session.signInError = "Access Denied: Incorrent EID"
+ 
+		res.redirect("signin")	
 	}
-	session = req.session;
 })
 
 
