@@ -13,18 +13,20 @@ function writeJSON(path, data) {
 function authorize(signin){
 
 	//GET USERS FROM FILE
+	const {eid: signInEID, name: signInName} = signin;
+	const [firstname, lastname] = signInName.split(" ");
+	authorized = null;
 
-	const user_info = 	getJSON("./data/workers.json");
-	// console.log("INFO: ", user_info);
-
-	// console.log("Authorizing ", sIgnin);
-
-	authorized = user_info.find((item) => item.eid == signin.id)
-
-	console.log("Authorized: ", authorized.eid)
-
-	return authorized
+	//FIND USER ENTRY BY NAME
+	userAttemptingLogin = getJSON("./data/workers.json").find(item => item.firstname === firstname && item.lastname == lastname);
 	
+	//CHECK IF EID MATCH
+	if(userAttemptingLogin){
+		authorized = (userAttemptingLogin.eid === signInEID) ? userAttemptingLogin : authorized;
+		console.log("Authorized: ", authorized);
+	}
+	
+	return authorized
 }
 
 

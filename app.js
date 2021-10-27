@@ -6,12 +6,15 @@ const ejs = require('ejs');
 var bodyParser = require('body-parser') 
 const cookieParser = require("cookie-parser");
 var session = require('express-session');
+// var expressLayouts = require("express-ejs-layouts")
 const {authorize, encode, decode, getJSON} = require('./modules/util');
 
 
 const app = express()
 app.set('port', (process.env.PORT || 8000));
 app.set('views', __dirname + '/views');
+// app.use(expressLayouts)
+// app.set('layout',  __dirname + '/layouts/base')
 app.engine('ejs', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
@@ -65,8 +68,8 @@ app.get(["/", "/signin"],
 		});
 	}
 	else {
-		res.render("landing", {
-			user : session.user
+		getCurrentlyLoggedInUser().then( (currentUser) => {
+			res.redirect("/" + currentUser.role + "/landing")
 		})
 	}
 });
@@ -77,19 +80,18 @@ app.get(["/", "/signin"],
 
 app.post('/validate', 
 (req, res) => {
-	var {id, name} = req.body;
+	var {eid, name} = req.body;
 	// console.log("FORM:", req.body)
 
 	//name-value: First Last
-	var user = authorize({id, name});
+	var user = authorize({eid, name});
 	if(user) {
-
 		req.session.loggedIn = true;
 		req.session.userEID = user.eid;
 
-		console.log ("Session: \n", req.session)
+		// console.log ("Session: \n", req.session)
 		encodedUser = encode(user)
-		res.redirect("/user/landing?user="+ encodedUser)
+		res.redirect("/" + user.role + "/landing")
 	}
 	else {
 		req.session.loggedIn = false;
@@ -116,59 +118,72 @@ function requireLogin(req, res, next) {
 }
 
 // //middle ware - require login for all routes starting with /user/
-app.all(["/user/*", "/admin/*"], requireLogin)
+app.all(["/worker/*", "/admin/*"], 
+requireLogin)
 
-app.get("/student/log", (req, res) => {
-	console.log (session)
-	res.render("log", {userEID: session.userEID})
+app.get("/worker/Log", 
+(req, res) => {
+	// console.log (session)
+	res.render("log")
 })
-app.get("/*/landing",  (req, res) => {
-	console.log("User Data: ", req.query)
-	res.render("landing", {
-		user: req.query.user,
-	})
+app.get(["/worker/landing","/worker/","/admin/", "/admin/landing"],  
+(req, res) => {
+	res.render("landing")
 })
 
-app.get("/f/*",  (req, res) => {
+app.get(["/worker/event?", "/admin/event"],
+// app.get("/event", 
+(req, res) => {
+	console.log("Opening event " + req.query.eventID + "...");
+	res.render("eventdetails", {eventID: req.query.eventID});
+})
+
+
+app.get(["/admin/Events", "/worker/Events"], (req, res) => {
+	res.render("viewevents")
+})
+
+/* =================== FUNCTIONS  =================== */
+
+app.get("/f/*",  
+(req, res) => {
 	path_list = req. _parsedOriginalUrl.pathname.split("/")
 	file_name = path_list.pop()
 	folder_name = path_list.pop()
-	// console.log(file_name, folder_name);
+	console.log(file_name, folder_name);
 	res.sendFile(path.join(__dirname, folder_name, file_name))
 })
 
 //GET JSON 
-app.get("/r/getJSON?", (req, res) => {
+app.get("/r/getJSON?", 
+(req, res) => {
 	path_list = req. _parsedOriginalUrl.pathname.split("/")
 	data = req.query.data
 	res.send(getJSON(data))
 });
 
-app.post("/w", (req, res) => {
+app.post("/w", 
+(req, res) => {
 	const {fileName, fileContents, errorMessage} = req.body;
 	fs.writeFile(fileName, fileContents, (error) => {
 		res.send((error) ? errorMessage : "Success! " + fileName + " updated.");
 	})
 })
 
+app.post("/currentUser", 
+(req, res) => {
+	console.log("Get Currently logged in user: ", session.userEID)
+	res.send(session.userEID);
+})
 
+app.get("/logout", 
+(req, res) => {
+	session.userEID = null;
+	session.loggedIn = false;
+	res.redirect("/")
 
-// app.post('/signin', function (req, res) {
-// 	var post = req.body;
-// 	if (post.user === 'john' && post.password === 'johnspassword') {
-// 	  req.session.userEID_id = johns_user_id_here;
-// 	  res.redirect('/my_secret_page');
-// 	} else {
-// 	  res.send('Bad user/pass');
-// 	}
-//   });
+})
 
-
-
-//FUNCTIONS
-function writeToFile(path, content) {
-	fs.write(path, 'w')
-}
 
 
 

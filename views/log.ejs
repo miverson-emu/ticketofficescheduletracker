@@ -3,71 +3,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
 	<script src = "../f/scripts/class.js"></script>
 	<script src = "../f/scripts/util.js"></script>
-
-
-<script>
-
-	const SUCCESS = 1
-
-
-	//TABLE
-	function log_table_row(eventID, eventTitle, eventType, eventDate, eventHours, workHours){
-		// console.log(ss.getItem("eventsAvailable"))
-		// console.log("Student Available for " + eventID + ": "  + ss.getItem("eventsAvailable").includes(eventID))
-		
-		return "<tr>" +
-			
-			"<td><input type = 'checkbox' " + 
-				(ss.getItem("eventsAvailable").includes(eventID) ? " checked " : "") + 
-				"class = 'sa' id = '" + eventID + "'></td>" + 
-			
-			"<td>" + eventTitle + "</td>" + 
-			"<td>" + eventType + "</td>" + 
-			"<td>" + eventDate + "</td>" + 
-			"<td>" + eventHours + "</td>" + 
-			"<td>" + workHours + "</td>" + 
-			"<td><div><button>View</Button></td>" + 
-		"</tr>"
-	}
-	function table_headers() {
-		return "<tr>" + 
-			"<th>Available</th>" + 
-			"<th>eventTitle</th>" + 
-			"<th>eventType</th>" + 
-			"<th>eventDate</th>" + 
-			"<th>eventHours</th>" + 
-			"<th>workHours</th>" + 
-			"<th>actions</th>" +
-		"</tr>"
-	}
-
-	function newline_list(list){
-		return list.join("\n")
-	}
-
-	function clearTable(){
-		table = document.getElementById('table')
-		table.innerHTML = table_headers()
-	}
-
-	function fillTable(events){
-		table = document.getElementById('table')
-		events.forEach(item => {			
-			table.innerHTML+=log_table_row(item.id, item.eventTitle, item.eventType,item.eventDate, item.eventHours, item.workHours, item.workersAvailable)
-		});
-	}
-
-	///STUDENT
-	function log_availability(){
-		availability = [...document.getElementsByClassName('sa')]
-		events = availability.map(item => {
-			return {
-				"id": item.id, 
-				"checked": item.checked
-			}
-		})
-	}
-</script>
+	<script src = "../f/scripts/table.js"></script>
 
 <style>
 	table, td, th{
@@ -77,50 +13,50 @@
 </style>
 
 <body>
+	<%- include("../partials/header.ejs") %>
 
 	<% var userEID = userEID %>
 	<script>
+		const ss = sessionStorage;
+
 		//EVENTS
 	window.onload = () => {
-		clearTable()
-		ss = sessionStorage
-		ls = window.localStorage;
-
-
-		//WHAT TO DO WHEN ACTIVE LOGIN - WHEN TO CLEAR LS 
-		// ls.setItem("eid", "<%- userEID %>");
-		setSessionStorageItem(ls, "eid", "E0001")
-		getSessionStorageItem(ss, "eid", getSessionStorageItem(ls, "eid"))
-
-		
-		getTicketOfficeEvents()
-		.then( (res) => {
-			fillTable(res)
+		clearTable();
+		//GET CURRENTLY LOGGED IN USER
+		getCurrentlyLoggedInUser()
+		.then((currentUserEID) => {
+			setSessionStorageItem(ss, "eid", currentUserEID)
 		})
+		//FILL TABLE
 		.then(() => {
-			//TRACK WHICH GAMES STUDENT IS AVAIABLE FOR
-			const eventCheckboxes = [...document.getElementsByClassName('sa')]
-
-			getWorkerData(ss.getItem("eid"), "eventsAvailable").then ((currentWorkerAvailability) => {
-
-				console.log(currentWorkerAvailability)
-
-				eventCheckboxes.forEach(item => {
-					item.checked = currentWorkerAvailability.includes(item.id);
-
-					
-					item.onchange = () => {
-						currentWorkerAvailability = eventCheckboxes.filter(item => item.checked).map(item => item.id);
-
-						writeAvailability("data/workers.json", {"eid": ss.getItem("eid"), "eventsAvailable": currentWorkerAvailability})
-						.then ((res) => {
-							console.log(res)
-							document.getElementById("status").innerHTML = res;
-						})
-					}
+			getTicketOfficeEvents()
+				.then( (events) => {
+					fillTable(events)
 				})
-			})
-		})	
+				.then(() => {
+					const eventCheckboxes = [...document.getElementsByClassName('sa')]
+					console.log(ss)
+					getUserData(ss.getItem("eid"), "eventsAvailable").then ((currentWorkerAvailability) => {
+
+						eventCheckboxes.forEach(checkbox => {
+							//MARK EVENTS THE WORKER IS AVAIABLE FOR
+							checkbox.checked = currentWorkerAvailability.includes(checkbox.id);
+
+							//MODIFY DATA IF USER CHANGES
+							checkbox.onchange = () => {
+								currentWorkerAvailability = eventCheckboxes.filter(item => item.checked).map(item => item.id);
+
+								writeAvailability("data/workers.json", {"eid": ss.getItem("eid"), "eventsAvailable": currentWorkerAvailability})
+								.then ((res) => {
+									console.log(res)
+									document.getElementById("status").innerHTML = res;
+								})
+							}
+						})
+					})
+				})	
+		})
+
 	}
 
 	</script>
@@ -137,6 +73,25 @@
 		</tr>
 	</table>
 
-	<button onclick = 'log_availability()'>log</button>
+	<%- include("../partials/footer.ejs") %>
+
 </body>
+
+<script>
+	const SUCCESS = 1
+
+
+
+
+	///STUDENT
+	function log_availability(){
+		availability = [...document.getElementsByClassName('sa')]
+		events = availability.map(item => {
+			return {
+				"id": item.id, 
+				"checked": item.checked
+			}
+		})
+	}
+</script>
 </html>

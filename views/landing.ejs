@@ -1,22 +1,28 @@
 <html>
 
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+	<script src = "../f/scripts/util.js"></script>
 	<script>
 
 		// STORE IN APP JSON 
 		admin_menu = [
 			
 			{
+				"active": true,
 				"title": "Events", 
 				"description": "View and Edit Event Information", 
-				"href": "#"
+				"href": "Events"
 			},
 			{
+				"active": false,
 				"title": "Availability", 
 				"description": "View Workers avaialable for all events", 
 				"href": "#"
 			},
 			{
+				"active": false,
 				"title": "Workers", 
 				"description": "View and Modify Worker Information",
 				"href": "#"
@@ -25,35 +31,36 @@
 
 		worker_menu = [
 			{
+				"active": false,
 				"title": "View Details", 
 				"description": "View and Edit your information",
-				"href" : "#"
+				
+				"href" : "ViewAllEvents"
 			}, 
 			{
+				"active": true,
 				"title": "Log Availability", 
 				"description": "View and Modify your event availability", 
-				"href" : "log"
+				"href" : "Log"
 			}
 		]
 		
-		function populateMenu(user) {
-			role = user.role;
-
-			const menu_list = document.getElementById("menu")
-			if (role == "student") {
-				worker_menu.forEach(item => {
-					menu_list.innerHTML+= listItem(item)	
-				});
-			}
-			else if (role == "admin") {
-				admin_menu.forEach(item => {
-					menu_list.innerHTML+= listItem(item)	
-				});
-			}
+		function populateMenu(role) {
+			const menu = document.getElementById("menu")
+				if (role == "worker") {
+					worker_menu.forEach(item => {
+						if (item.active) menu.innerHTML+= listItem(item)	
+					});
+				}
+				else if (role == "admin") {
+					admin_menu.forEach(item => {
+						if (item.active) menu.innerHTML+= listItem(item)	
+					});
+				}	
 		}
 
 		function listItem(item) {
-			return "<li><a href = '" + item.href + "'>" + item.title + " (" + item.description + ")</a></li>"
+			return "<li><a href = '" + appendCurrentURL(item.href) + "'>" + item.title + " (" + item.description + ")</a></li>"
 		}
 
 		function getUser() {
@@ -69,26 +76,13 @@
 </head>
 
 <body>
-	<% var user = user %>
-<script>
-	window.onload = () => {
-			user = JSON.parse(atob("<%= user %>"));
-			console.log(user)
-			populateMenu(user)
 
-			document.getElementById("role").innerHTML = user.role;
-			document.getElementById("name").innerHTML = user.firstname;
-
-			window.history.replaceState({}, document.title, "/" + user.role + "/landing");
-
-		}
-</script>
 
 	<div>
 		<h2>
 			Welcome <span id = "name"></span>!
 		</h2>
-		<div id = "role"></div>
+		<div>Role: <span id = "role"></span></div>
 	</div>
 	
 
@@ -97,6 +91,22 @@
 		<ul id = "menu">
 		</ul>
 	</div>
-
+<%- include("../partials/footer.ejs") %>
 </body>
+
+<script>
+	window.onload = () => {
+
+		getCurrentlyLoggedInUser().then((currentUserEID) => {
+			console.log(currentUserEID)
+			getUserData(currentUserEID, "role").then((role) => {
+				populateMenu(role)
+				document.getElementById("role").innerHTML = role;
+			})
+			getUserData(currentUserEID, "firstname").then((name) => {
+				document.getElementById("name").innerHTML = name;
+			})
+		})
+	}
+</script>
 </html>

@@ -10,7 +10,7 @@
 			}
 
 			function selectOption(value, display) {
-				return "<option value =" + value  + ">" + display + "</option>"
+				return "<option value =\"" + value  + "\">" + display + "</option>"
 			}
 
 		</script>
@@ -18,21 +18,20 @@
 
 <body>
 
-
+	<%- include("../partials/header.ejs") %>
 	<% var workers = workers %>
 	<script>
 		window.onload = () => {
 				populateList(<%- workers %>)
 			}
 	</script>
-<h1>EMU Ticket Office Schedule Tracker</h1>
 <h3>Login: </h3>
 <form action = "/validate" method = "POST">
 	<select name = 'name' id = "worker-name">
 		<option disabled selected> -- Select your Name</option>
 	</select>
 
-	<input placeholder = 'Passkey' name = 'id' type = text value = "E">
+	<input name = 'eid' type = text value = "E">
 	<!-- LOOK FOR 'X' password -->
 
 	<input type = 'submit'>

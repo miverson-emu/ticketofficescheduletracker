@@ -7,7 +7,7 @@ function getJSON(path) {
 }
 
 
-function getWorkerData(eid, attribute){
+function getUserData(eid, attribute){
 	return $.get(
 		"../r/getJSON?data=data/workers.json", 
 		(data) => {
@@ -21,7 +21,7 @@ function writeJSON(path, data) {
 	console.log(Object.keys(data))
 	keys = Object.keys(data).slice(1)
 	keys.forEach(key => {
-		getWorkerData(data.eid, key).then((json) => {
+		getUserData(data.eid, key).then((json) => {
 		console.log(json)
 	})
 	});
@@ -75,5 +75,48 @@ function getTicketOfficeEvents(){
 	})
 }
 function toJSON(data) {
-	return JSON.stringify(data, null, 4)
+	return (typeof data != "string") ? JSON.stringify(data, null, 4): data;
+}
+
+function getCurrentlyLoggedInUser() {
+	return $.post("/currentUser", 
+	(res) => {
+		return res
+	})
+}
+
+function getEventDetails(eventID){
+	return getJSON("data/events.json").then((events) => {
+		return events.find(event => event.id == eventID)
+	})
+
+}
+
+function getWorkersAvailableForEvent(eventID){
+	return getJSON("data/workers.json")
+	.then((workers) => {
+		workersAvailable = []
+
+		workers.forEach((worker) => {
+			if (worker.eventsAvailable.includes(eventID)){
+				workersAvailable.push(worker.lastname + ", " + worker.firstname)
+			}
+		})
+
+		return workersAvailable
+	})
+}
+
+function appendCurrentURL(add){
+	currentURL = window.location.href.split('/');
+
+		currentURL.shift() //remove href:
+		currentURL.shift() //remove ''
+		currentURL.shift() //remove localhost:8000
+
+		
+		currentURL.pop()
+		currentURL.push(add)
+		console.log("/" + currentURL.join("/"))
+		return "/" + currentURL.join("/")
 }

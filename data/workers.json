@@ -3,9 +3,8 @@
         "firstname": "Morgan",
         "lastname": "Iverson",
         "eid": "E0001",
-        "role": "student",
+        "role": "worker",
         "eventsAvailable": [
-            "FS0",
             "FS1"
         ]
     },
