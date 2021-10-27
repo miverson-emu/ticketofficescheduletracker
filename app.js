@@ -41,9 +41,6 @@ app.listen(app.get("port"), () => {
 	console.log("App is running on http://localhost:" + app.get("port"))
 })
 
-//kill -9 $(lsof -t -i:8000)
-
-//nodemon app.js
 // http://localhost:8080/ 
 
 
@@ -75,8 +72,6 @@ app.get(["/", "/signin"],
 		res.redirect("/" + role + "/landing")
 	}
 });
-	
-
 
 /* =================== VALIDATE  =================== */
 
@@ -145,6 +140,12 @@ app.get(["/admin/Events", "/worker/Events"], (req, res) => {
 	res.render("viewevents")
 })
 
+app.get("/newevent", 
+(req, res) => {
+	res.render("newevent")
+})
+
+
 /* =================== FUNCTIONS  =================== */
 
 app.get("/f/*",  
@@ -152,7 +153,7 @@ app.get("/f/*",
 	path_list = req. _parsedOriginalUrl.pathname.split("/")
 	file_name = path_list.pop()
 	folder_name = path_list.pop()
-	console.log(file_name, folder_name);
+	// console.log(file_name, folder_name);
 	res.sendFile(path.join(__dirname, folder_name, file_name))
 })
 
@@ -186,6 +187,11 @@ app.get("/logout",
 
 })
 
+app.post("/makeNewEvent", 
+(req, res) => {
+	eventDetails = req.body.eventDetails
+	console.log("Make New Event: \n", eventDetails)
+})
 
 
 

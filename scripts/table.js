@@ -5,44 +5,50 @@ function clearTable(view){
 
 function fillTable(events, view){
 	table = document.getElementById('table')
-	events.forEach(item => {			
-		table.innerHTML+= (view) ? view_table_row(item.id, item.eventTitle, item.eventType,item.eventDate, item.eventHours, item.workHours) : log_table_row(item.id, item.eventTitle, item.eventType,item.eventDate, item.eventHours, item.workHours)
+	events.forEach(event => {	
+		console.log(event)
+		
+		table.innerHTML+= (view) ? view_table_row(event) : log_table_row(event)
 	});
 }
 
 	//TABLE
-	function log_table_row(eventID, eventTitle, eventType, eventDate, eventHours, workHours){		
+	function log_table_row(event){		
 		return "<tr>" +
 			
-			"<td><input type = 'checkbox' class = 'sa' id = '" + eventID + "'></td>" + 
+			"<td><input type = 'checkbox' class = 'sa' id = '" + event.id + "'></td>" + 
 			
-			"<td>" + eventTitle + "</td>" + 
-			"<td>" + eventType + "</td>" + 
-			"<td>" + eventDate + "</td>" + 
-			"<td>" + eventHours + "</td>" + 
-			"<td>" + workHours + "</td>" + 
-			"<td><div><button onclick = \"location.href = '" + appendCurrentURL("event?eventID=" + eventID) + "'\">View</button></td>" + 
+			"<td>" + event.title + "</td>" + 
+			"<td>" + event.category + "</td>" + 
+			"<td>" + event.subcategory + "</td>" + 
+			"<td>" + event.date + "</td>" + 
+			"<td>" + event.hours + "</td>" + 
+			"<td>" + event.workHours + "</td>" + 
+			"<td><div><button onclick = \"location.href = '" + appendCurrentURL("event?eventID=" + event.id) + "'\">View</button></td>" + 
 		"</tr>"
 	}
 
-	function view_table_row(eventID, eventTitle, eventType, eventDate, eventHours, workHours){	
-		console.log("View Table")	
+	function view_table_row(event){	
+		// console.log("View Table")	
 		return "<tr>" +			
-			"<td>" + eventTitle + "</td>" + 
-			"<td>" + eventType + "</td>" + 
-			"<td>" + eventDate + "</td>" + 
-			"<td>" + eventHours + "</td>" + 
-			"<td>" + workHours + "</td>" + 
-			"<td><div><button onclick = \"location.href = '" + appendCurrentURL("event?eventID=" + eventID) + "'\">View</button></td>" + 
+		"<td>" + event.title + "</td>" + 
+		"<td>" + event.category + "</td>" + 
+		"<td>" + event.subcategory + "</td>" + 
+		"<td>" + event.date + "</td>" + 
+		"<td>" + event.hours + "</td>" + 
+		"<td>" + event.workHours + "</td>" + 
+			"<td><div><button onclick = \"location.href = '" + appendCurrentURL("event?eventID=" + event.id) + "'\">View</button></td>" + 
 		"</tr>"
+		
 	}	function table_headers(view) {
 		return "<tr>" + 
 			(view ? "": "<th>Available</th>") + 
-			"<th>eventTitle</th>" + 
-			"<th>eventType</th>" + 
-			"<th>eventDate</th>" + 
-			"<th>eventHours</th>" + 
-			"<th>workHours</th>" + 
-			"<th>actions</th>" +
+			"<th>Title</th>" + 
+			"<th>Category</th>" + 
+			"<th>Subcategory</th>" + 
+			"<th>Date</th>" + 
+			"<th>Hours</th>" + 
+			"<th>Work Hours</th>" + 
+			"<th>Actions</th>" +
 		"</tr>"
 	}

@@ -1,19 +1,21 @@
 [
 	{
 	  "id": "FS0",
-	  "eventTitle": "Game 1",
-	  "eventType": "Sport",
-	  "eventDate": "09/21/2021",
-	  "eventHours": "5:00PM - 7:00PM",
+	  "title": "Game 1",
+	  "category": "Sport",
+	  "subcategory": "Football", 
+	  "date": "09/21/2021",
+	  "hours": "5:00PM - 7:00PM",
 	  "workHours": "3:00PM - 7:00PM",
 	  "workersAvailable": []
 	},
 	{
 	  "id": "FS1",
-	  "eventTitle": "Game 2",
-	  "eventType": "Concert",
-	  "eventDate": "09/22/2021",
-	  "eventHours": "5:00PM - 7:00PM",
+	  "title": "Game 2",
+	  "category": "Sport",
+	  "subcategory": "Football", 
+	  "date": "09/22/2021",
+	  "hours": "5:00PM - 7:00PM",
 	  "workHours": "3:00PM - 7:00PM",
 	  "workersAvailable": [
 		{
