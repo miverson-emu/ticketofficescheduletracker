@@ -1,0 +1,105 @@
+body{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(248, 248, 255);
+	font-family: sans-serif
+}
+tabs{
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	background-color: #ddd;
+	overflow-x: scroll;
+	height: fit-content;
+	/* margin-bottom: 5px; */
+	
+}
+tabs button{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	background-color: inherit;
+	border: none;
+	outline:none;
+	cursor:pointer;
+	padding: 15px;
+	transition: .3s;
+	font-size: 15px;
+	/* font-weight: bold; */
+}
+tabs button:hover{
+	background-color: rgb(248, 248, 255);
+}
+
+.tab-content{
+	display: none;
+}
+view{
+	display: none;
+	height: 90%;
+	width: 80%;
+	padding: 5px;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	/* justify-items: ; */
+	background-color: #ddd;
+	box-shadow: 0px 0px 5px 2px #aaaaaa ;
+	/* horz vert blur spread */
+}
+
+demounselected{
+	background-color: rgb(248, 248, 255);
+	box-shadow: 0px 0px 5px 2px #aaaaaa ;
+
+	display: flex; 
+	width: 80%;
+	flex-direction: column; 
+	align-items: center; 
+	padding: 20px;
+	gap:20px;
+	justify-content: space-between;
+}
+content{
+	display: block;
+	background-color: rgb(248, 248, 255);
+	height: 90%;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	overflow: scroll;
+}
+iframe{
+	width: 90%;
+	height: 70%;
+	justify-self: baseline;
+	align-self: center;
+	background-color: #ccc;
+	border: none;
+}
+content div{
+	/* background-color: blue; */
+	flex: 1;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+contentTitle{
+	display: block;
+	font-size:20px;
+}
+#title, .title{
+	font-size: 30px;
+	padding: 10px;
+	font-weight: bold;
+}
+.author {
+	font-size: 15px;
+	padding-bottom: 10px;
+
+}
+content div p{
+	font-size: 15px;
+}
