@@ -80,7 +80,7 @@ function content(title, text, src, contentID, parentID) {
 	"<contentTitle>"+ title + "</contentTitle>" + 
 	"<p>" + text + "</p>" + 
 	"</div>" + 
-	(src ? "<video controls src = \"{{ site.baseurl }}" + src + "\" ></video>" : "") + ""
+	(src ? "<video controls src = \"" + src + "\" ></video>" : "") + ""
 	"</div>"
 }
 
