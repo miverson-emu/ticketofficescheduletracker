@@ -6,25 +6,25 @@
 				"title": "Authentication",
 				"bodyTitle": "Authentication of Workers and Admins",
 				"text": "This application permits 2 types of users, admins and workers. Workers and admins have different types of access. The information role of each user stored in the system and is unknown at sign in.<br><br>After a successful login the user can see their role and abilities on the landing screen.<br><br>Next Steps: Worker Profiles, Add Workers, Remove Workers",
-				"media": ""
+				"media": "/videos/Authentication.mp4"
 			}, 
 			{
 				"title": "Log Availability",
 				"bodyTitle": "Enter Availability for Each Event",
 				"text": "Users with the role 'worker' can mark their availability for each event in the logger using a checkmark! Once modified (imemediatley after click) the worker's availability can be seen by any users with the role 'admin' on the marked event's details page.<br><br>",
-				"media": ""
+				"media": "/videos/LogAvailability.mp4"
 			},
 			{
 				"title": "Events",
 				"bodyTitle": "Add Event",
 				"text": "Users with the role 'admin' can add events to the events listing. <br><br>Next Steps: Edit Event Details, Remove Events",
-				"media": ""
+				"media": "/videos/AddEvent.mp4"
 			}, 
 			{
 				"title": "View Availability",
 				"bodyTitle": "View Workers Available for Each Event",
 				"text": "Users with the role 'admin' can see the workers available for any event on the events detail page.<br><br>",
-				"media": ""
+				"media": "/videos/LogAvailability.mp4"
 			}, 
 			
 			{

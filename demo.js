@@ -21,6 +21,7 @@ function demoSelected() {
 			demoSelectDisplay.style.display = "none";
 			return true
 		})
+	
 	}
 	else {
 		//populate selector
@@ -32,8 +33,10 @@ function demoSelected() {
 				selector.innerHTML+=selectorOption(demo.id, "Demo " + demo.id)
 			}) 
 		})
+		.then(() => {
+			return false
+		})
 
-		return false
 		//add event listener
 	}
 }
@@ -77,7 +80,7 @@ function content(title, text, src, contentID, parentID) {
 	"<contentTitle>"+ title + "</contentTitle>" + 
 	"<p>" + text + "</p>" + 
 	"</div>" + 
-	(src ? "<iframe style = " + + "allowfullscreen src = \"" + src + "\"></iframe>" : "") + 
+	(src ? "<video controls src = \"{{ site.baseurl }}" + src + "\" ></video>" : "") + ""
 	"</div>"
 }
 

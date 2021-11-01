@@ -70,8 +70,8 @@ content{
 	box-sizing: border-box;
 	overflow: scroll;
 }
-iframe{
-	width: 90%;
+video{
+	width: 70%;
 	height: 70%;
 	justify-self: baseline;
 	align-self: center;
