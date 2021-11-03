@@ -1,400 +1,101 @@
 <html>
-	<head>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
-		<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
-		<!-- <link rel = "stylesheet" href = "../styles/eventdetails.css"> -->
 
-		<!-- <link rel = "stylesheet" href = "../f/styles/eventdetails.css"> -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
-		<script src = "../f/scripts/util.js"></script>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+		integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+	<link rel="stylesheet" href="/f/styles/newevent.css">
 
-		<style>
-			main{
-				display:flex;
-				align-items: flex-start;
-				justify-content: center;
-
-				font-family: sans-serif;
-			}
-			container{
-				width: 70%;
-				margin-top: 100px;
-				border: 3px solid lightgrey;
-				padding: 40px;
-			}
-			hr{
-				margin: 20px 0px;
-				border: none;
-				background-color: black;
-				height: 1px;
-			}
-			label{
-				font-size: 10px;
-				font-weight: bold;
-				margin-left: 5px;
-			}
-			center{
-				/* display:flex; */
-				width: 100%;
-				justify-content: center;
-				/* text-align: center; */
-			}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+	<script src="../f/scripts/util.js"></script>
 
 
-			
-			input, select{
-				font-family: sans-serif;
-				display: block;
-				width: 60%;
-			}
-			input, select:focus{
-				outline:none;
-			}
-		
-			.input input{
-				display: inline;
-				width: 30%;
-			}
-			.input, input, select {
-				border: 1px solid black;
-				border-radius: 5px;
-				padding: 3px 10px;
-				margin-bottom: 15px;
-				margin-top: 5px;
-			}
-			.error{
-				color: red;
-				font-size: 10px;
-				display: none;
+</head>
 
-			}
-
-
-			
-
-			#id{
-				border:none
-			}
-			#id-prefix{
-				color:grey;
-				font-weight: bold;
-				font-size: 12px;
-			}
-
-
-
-		</style>
-	</head>
-	<body>
-		<!-- <%- include("../partials/header.ejs") %> -->
-		<main>
-			<container>
-				<h2>Create New Event</h3>
-			
-				<!-- <form action = "/makeNewEvent" method = "post" id = "form"> -->
-					<form id = "form">
+<body>
+	<%- include("../partials/header.ejs") %>
+	<main>
+		<container>
+			<h2>Create New Event</h3>
+				<form id="form">
 
 					<label for="title">Event Title</label>
-					<i class="error fas fa-exclamation-circle" id = "title-error"></i>
-					<div id = "title-exists-error" class = "error">This Event ID already exists.</div>
-					<input type = "text" name = "title">
+					<i class="error fas fa-exclamation-circle" id="title-error"></i>
+					<div id="title-exists-error" class="error">This Event ID already exists.</div>
+					<input type="text" name="title">
 					<br>
 
 					<h3>Event Classification</h3>
 
-					<label for = "category">Category</label>
-					<i class="error fas fa-exclamation-circle" id = "category-error"></i>
-					<select name = "category" id = "category">
-						<option disabled selected value = "">-- Select an Event Category --</option>
+					<label for="category">Category</label>
+					<i class="error fas fa-exclamation-circle" id="category-error"></i>
+					<select name="category" id="category">
+						<option disabled selected value="">-- Select an Event Category --</option>
 					</select>
 
-					<label for = "subcategory">Subcategory</label>
-					<i class="error fas fa-exclamation-circle" id = "subcategory-error"></i>
-					<select id = "subcategory" name = "subcategory">
-						<option disabled selected value = "">-- Select an Event Category --</option>
+					<label for="subcategory">Subcategory</label>
+					<i class="error fas fa-exclamation-circle" id="subcategory-error"></i>
+					<select id="subcategory" name="subcategory">
+						<option disabled selected value="">-- Select an Event Category --</option>
 					</select>
 
-					<label for = "id">Event ID</label>
-					<i class="error fas fa-exclamation-circle" id = "id-error"></i>
-					<div id = "id-exists-error" class = "error">This Event ID already exists.</div>
+					<label for="id">Event ID</label>
+					<i class="error fas fa-exclamation-circle" id="id-error"></i>
+					<div id="id-exists-error" class="error">This Event ID already exists.</div>
 					<br>
-					<span class = "input">
-						<span id = "id-prefix">__</span>
-						<input id = "id" name = "id" disabled value = "" type = "number" oninput = "formatIDNumber(this)" min="0" step="1">
+					<span class="input">
+						<span id="id-prefix">__</span>
+						<input id="id" name="id" disabled value="" type="number" oninput="formatIDNumber(this)" min="0"
+							step="1">
 					</span>
 
 					<h3>Event Time</h3>
 
-					<label for = "date">Event Date</label>
-					<i class="error fas fa-exclamation-circle" id = "date-error"></i>
-					<input name = "date" type = "date"> 
+					<label for="date">Event Date</label>
+					<i class="error fas fa-exclamation-circle" id="date-error"></i>
+					<input name="date" type="date">
 
 					<br>
-					<div class = "error" id = "hours-error"><label>Event start time must be earlier than event end time.</label></div>
-					<label for = "hours-start">Event Start Time</label>
-					<i class="error fas fa-exclamation-circle" id = "hours-start-error"></i>
-					<input name = "hours-start" id = "hours-start" type = "time"> 
+					<div class="error" id="hours-error"><label>Event start time must be earlier than event end
+							time.</label></div>
+					<label for="hours-start">Event Start Time</label>
+					<i class="error fas fa-exclamation-circle" id="hours-start-error"></i>
+					<input name="hours-start" id="hours-start" type="time">
 
 
-					<label for = "hours-end">Event End Time</label>
-					<i class="error fas fa-exclamation-circle" id = "hours-end-error"></i>
-					<input name = "hours-end" id = "hours-end" type = "time"> 
+					<label for="hours-end">Event End Time</label>
+					<i class="error fas fa-exclamation-circle" id="hours-end-error"></i>
+					<input name="hours-end" id="hours-end" type="time">
 
 					<h3>Event Worker Details</h3>
-					<div class = "error" id = "workHours-error"><label>Worker call time must be earlier than event worker end time.</label></div>
+					<div class="error" id="workHours-error"><label>Worker call time must be earlier than event worker
+							end time.</label></div>
 
-					<label for = "workHours-start">Worker Call Time</label>
-					<i class="error fas fa-exclamation-circle" id = "workHours-start-error"></i>
-					<input name = "workHours-start" id = "workHours-start" type = "time"> 
+					<label for="workHours-start">Worker Call Time</label>
+					<i class="error fas fa-exclamation-circle" id="workHours-start-error"></i>
+					<input name="workHours-start" id="workHours-start" type="time">
 
-					<label for = "workHours-end">Worker End Time</label>
-					<i class="error fas fa-exclamation-circle" id = "workHours-end-error"></i>
-					<input name = "workHours-end" id = "workHours-end" type = "time"> 
+					<label for="workHours-end">Worker End Time</label>
+					<i class="error fas fa-exclamation-circle" id="workHours-end-error"></i>
+					<input name="workHours-end" id="workHours-end" type="time">
 
 					<br>
 
 					<center>
-						<input id = "submit" style = "align-self: center" type = "submit" onclick = "validation()"" = "Create New Event">
+						<input id="submit" style="align-self: center" type="submit" onclick="validation()"" = " Create
+							New Event">
 					</center>
 				</form>
-		
-	</container>
-		</main>
 
-		<!-- <%- include("../partials/footer.ejs") %> -->
-		
-	</body>
+		</container>
+	</main>
 
-	<script>
-		function formatIDNumber(input) {
-			if(input.value.length < 2 && input.value < 10){
-				input.value = "0" + input.value
-			}
-			
-			else if (input.value.length >= 2){
-				currentValue = input.value.split("")
+	<%- include("../partials/footer.ejs") %>
 
-				if (input.value < 10){
-					while(currentValue.length > 2) {
-						currentValue.shift()
-					}
-				}
-				else {
-					while(currentValue[0] == "0"){
-						currentValue.shift()
-					}
-				}
-				
-				input.value = currentValue.join("")
+</body>
 
-			}
-		}
-
-		const times = [
-				{
-					"error": "hours-error", 
-					"start": "hours-start", 
-					"end": "hours-end"
-				}, 
-				{
-					"error": "workHours-error",
-					"start": "workHours-start", 
-					"end": "workHours-end"
-				}
-			]
-
-		window.onload = () => {
-			// validation()
-			document.getElementById("form").onsubmit = (e) => {
-				e.preventDefault()
-			}
-			//HIDE ERRORS ON KEY UP
-			formElements = [...document.getElementById("form").elements]
-			formElements.forEach((elm) => {
-				["keyup", "change"].forEach((event => {
-					elm.addEventListener(event, () => {
-						errors = [
-						elm.name + "-error", 
-						elm.name + "-exists-error", 
-						elm.name.split("-")[0] + "-error"
-						]
-
-						errors.forEach((error) => {
-							try{
-								document.getElementById(error).style.display = "none"
-							}
-							catch(e){
-								console.log("ElementWithIDNotFound: " + error);
-							}
-						})
-						
-					})
-				}))
-				
-			})
-
-			// getEventCategories()
-			getJSON("data/util.json").then((resources) => {
-				eventCategories = resources.eventCategories;
-				eventCategories = eventCategories.map(resource => resource.category)
-				// console.log(eventCategories)
-				
-				categorySelector = document.getElementById("category")
-				categorySelector.innerHTML = "<option disabled selected value = ''>-- Select an Event Category --</option>"
-
-				//Populate Categories
-				eventCategories.forEach((category) => {
-					categorySelector.innerHTML+=selectorOption(category)
-				})
-
-				//Populate Subcategory on Category Selection
-				categorySelector.onchange = () => {
-
-					subcategorySelector = document.getElementById("subcategory")
-					subcategorySelector.innerHTML = "<option disabled selected value = ''>-- Select an Event Category --</option>"
-
-					if(categorySelector.value != "") {
-						selectedCategory = categorySelector.value
-						getJSON("data/util.json").then((resources) => {
-							eventCategories = resources.eventCategories;
-
-							subcategories = eventCategories.find(category => category.category == selectedCategory).subcategories
-						
-							subcategories.forEach((subcategory) => {
-								subcategorySelector.innerHTML+= selectorOption(subcategory.name, {id: subcategory.id})
-							})
-						})
-					}
-				
-					//SET ID PREFIX ON CHANGE
-					subcategorySelector.onchange = () => {
-						if(subcategorySelector.value != ""){
-							document.getElementById("id-prefix").innerHTML = $("#subcategory").find("option:selected").attr("id-prefix");
-							document.getElementById("id").disabled = false;
-						}
-					}
-				}
-			})
-
-			
-
-			// getEventSubcategories(category)
-
-
-
-		}
-
-		function selectorOption(value, ...attributes){
-			attributesHTML = ""
-			attributes.forEach((attribute) => {
-				attributesHTML+=" id-prefix='" + attribute.id + "' "
-			})
-			// if(attributesHTML) console.log(attributesHTML)
-
-			return "<option value ='" + value + "'" + attributesHTML + ">" + value + "</option>";
-		}
-
-		function validation(){
-			console.log("Validation")
-			valid = true;
-			form = document.getElementById("form")
-			formElements = [...form.elements]
-			formElements.forEach((elm) => {
-				if(elm.name) {
-					if(elm.value == "") {
-						valid = false;
-						console.log(elm)
-						document.getElementById(elm.name + "-error").style.display = "inline";
-					}
-					else {
-						document.getElementById(elm.name + "-error").style.display = "none";
-					}
-				}
-					
-			})
-
-			times.forEach((timePair) => {
-				startTime = document.getElementById(timePair["start"]).value ? document.getElementById(timePair["start"]).value : ""
-				endTime = document.getElementById(timePair["end"]).value ? document.getElementById(timePair["end"]).value : ""
-
-				if(!validTimes(startTime, endTime)){
-					valid = false
-					document.getElementById(timePair["error"]).style.display = "block"
-				}
-			})
-
-
-			form.setAttribute("valid", valid);
-
-			
-
-			if(valid){
-				formData = [...form.elements];
-				formData.pop() //remove submit
-
-				formData = formData.map((input) => ({ [ input.name ]: input.value }))
-				formData = Object.assign({}, ...formData)
-				
-
-				//STANDARD HOURS
-				formData[ "hours" ] =  convertTimeToStardard(formData["hours-start"])  + " - " + convertTimeToStardard(formData["hours-end"]);
-				formData[ "workHours" ] = convertTimeToStardard(formData["workHours-start"])  + " - " + convertTimeToStardard(formData["workHours-end"]);
-				
-				["hours-start", "hours-end", "workHours-start", "workHours-end"].forEach(key =>{
-					delete formData[key]
-				})
-
-				//ADD PREFIX TO ID
-				formData[ "id" ] = document.getElementById("id-prefix").innerHTML + formData[ "id" ]
-
-				document.body.innerHTML+= JSON.stringify(formData)
-
-
-				$.post(
-					"/makeNewEvent", 
-					{eventDetails: formData}, 
-					(res) => {
-						console.log(res)
-					}
-				)
-			}
-			
-		}
-
-		function validTimes(startTime, endTime, error){
-			valid = true
-			if(startTime == "" || endTime == ""){
-				valid = false
-			}
-			else if (new Date(startTime).getTime() >= new Date(endTime).getTime()) {
-				valid = false;
-			}
-			return valid
-		}
-		function serverValidation(){
-			//ID already exists 
-			//title already exists
-		}
-
-		function convertTimeToStardard(timeString){
-			var [hour, minute] = timeString.split(":")
-			tod = "AM"
-
-			hour = parseInt(hour)
-
-			if (hour >= 12) tod = "PM"
-			if (hour > 12) hour = hour - 12
-			if (hour == 0) hour = 12
-
-			console.log("New: ", hour, minute)
-
-			timeString = hour + ":" + minute + " " + tod
-			console.log(timeString)
-
-			return timeString
-
-		}
-	</script>
+<script src="/f/newevent.js"></script>
 
 </html>

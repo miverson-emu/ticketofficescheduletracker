@@ -145,6 +145,17 @@ app.get("/newevent",
 	res.render("newevent")
 })
 
+// /admin/workers
+app.get("/workers", 
+(req, res) => {
+	res.render("workers")
+})
+
+// /admin/worker
+app.get("/ViewWorker", 
+(req, res) => {
+	res.render("viewprofile")
+})
 
 /* =================== FUNCTIONS  =================== */
 

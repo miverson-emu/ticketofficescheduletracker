@@ -26,5 +26,9 @@
 				}
 			]
 		}
+	], 
+	"roles": [
+		"worker", 
+		"admin"
 	]
 }

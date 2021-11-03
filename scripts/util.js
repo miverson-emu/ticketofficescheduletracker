@@ -24,8 +24,7 @@ function writeJSON(path, data) {
 		getUserData(data.eid, key).then((json) => {
 		console.log(json)
 	})
-	});
-	
+	})
 }
 
 function writeAvailability(path, data, errorMessage) {
