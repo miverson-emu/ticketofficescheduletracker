@@ -1,0 +1,72 @@
+main{
+	display:flex;
+	align-items: flex-start;
+	justify-content: center;
+
+	font-family: sans-serif;
+}
+container{
+	width: 70%;
+	margin-top: 100px;
+	border: 3px solid lightgrey;
+	padding: 40px;
+}
+hr{
+	margin: 20px 0px;
+	border: none;
+	background-color: black;
+	height: 1px;
+}
+label{
+	font-size: 10px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+center{
+	/* display:flex; */
+	width: 100%;
+	justify-content: center;
+	/* text-align: center; */
+}
+
+
+
+input, select{
+	font-family: sans-serif;
+	display: block;
+	width: 60%;
+}
+input, select:focus{
+	outline:none;
+}
+
+.input input{
+	display: inline;
+	width: 30%;
+}
+.input, input, select {
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 3px 10px;
+	margin-bottom: 15px;
+	margin-top: 5px;
+}
+.error{
+	color: red;
+	font-size: 10px;
+	display: none;
+	font
+
+}
+
+
+
+
+#id{
+	border:none
+}
+#id-prefix{
+	color:grey;
+	font-weight: bold;
+	font-size: 12px;
+}

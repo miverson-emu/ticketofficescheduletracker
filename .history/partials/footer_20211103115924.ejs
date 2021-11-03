@@ -1,0 +1,14 @@
+<script>
+	window.addEventListener("load", () => {
+		document.getElementById("menu-link").setAttribute("href", appendCurrentURL("landing"))
+		document.getElementById("back-link").setAttribute("href", "javascript: history.back()")
+
+
+	});
+</script>
+<hr>
+<div style = "display:flex; flex-direction: column;">
+	<button><a id = "back-link">Back</a></button>
+	<button>Menu</a></button>
+	<button onclick = "javascript:/logout">Logout</button>
+</div>
