@@ -135,7 +135,7 @@ app.get("/admin/workers",
 })
 
 // /admin/worker
-app.get(["/admin/viewworker?","/worker/viewworker?"], 
+app.get(["/admin/viewworker?","/worker/view" 
 (req, res) => {
 	res.render("viewprofile")
 })

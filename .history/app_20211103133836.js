@@ -129,13 +129,13 @@ app.get("/admin/newevent",
 })
 
 // /admin/workers
-app.get("/admin/workers", 
+app.get("admin/workers", 
 (req, res) => {
 	res.render("workers")
 })
 
 // /admin/worker
-app.get(["/admin/viewworker?","/worker/viewworker?"], 
+app.get("admin/viewworker", 
 (req, res) => {
 	res.render("viewprofile")
 })

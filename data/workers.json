@@ -3,17 +3,20 @@
         "firstname": "Morgan",
         "lastname": "Iverson",
         "eid": "E0001",
-        "email": "mi@mail.com", 
+        "email": "mi@mail.com",
         "role": "worker",
         "eventsAvailable": [
-            "FS1"
+            "FS00",
+            "FS01",
+            "FS03",
+            "FS04"
         ]
     },
     {
         "firstname": "Chris",
         "lastname": "LaReau",
         "eid": "E0002",
-        "email": "cl@mail.com", 
+        "email": "cl@mail.com",
         "role": "admin",
         "eventsAvailable": [
             "FS1"

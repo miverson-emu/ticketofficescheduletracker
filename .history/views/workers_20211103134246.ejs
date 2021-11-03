@@ -7,9 +7,6 @@
 		<link rel = "stylesheet" href = "../f/styles/table.css"></link>
 	</head>
 	<body>
-		<%- include("../partials/header.ejs") %>
-
-		<h2>View All Workers</h2>
 		<table>
 			<tr>
 				<th>Last Name</th>
@@ -19,7 +16,6 @@
 			<th>Actions</th>
 		</tr>
 		</table>
-		<%- include("../partials/footer.ejs") %>
 	</body>
 	<script>
 		window.onload = () => {
@@ -44,7 +40,7 @@
 				"<td>" + firstname + "</td>" + 
 				"<td>" + role + "</td>" + 
 				"<td>" + email + "</td>" + 
-				"<td><button onclick = \"location.href = '/admin/viewworker?eid=" + eid + "'\">View Profile</button></td>" + 
+				"<td>" + "<button onclick = 'location.href = '/admin/viewworker?eid=" + "'>View Profile</button>" + "</td>" + 
 			"</tr>"
 		}
 	</script>

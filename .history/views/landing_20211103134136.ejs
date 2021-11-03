@@ -50,10 +50,16 @@
 				if (role == "worker") {
 					worker_menu.forEach(item => {
 						if (item.active) {
-							console.log(item)
 
 							
+							if(item.title = "View Profile"){
+								getCurrentlyLoggedInUser()
+								.then((eid) => {
+									item.href+= eid;
+								});	
+							}
 							menu.innerHTML+= listItem(item)	
+
 						}
 					});
 				}
@@ -68,7 +74,12 @@
 			return "<li><a href = '" + appendCurrentURL(item.href) + "'>" + item.title + " (" + item.description + ")</a></li>"
 		}
 
-		
+		function getUser() {
+			fetch("../data/workers.json")
+			.then ((res) => {
+				console.log(res);
+			})
+		}
 	
 	</script>
 
@@ -99,7 +110,6 @@
 
 		getCurrentlyLoggedInUser().then((currentUserEID) => {
 			console.log(currentUserEID)
-			worker_menu.find((item => item.title == "View Profile")).href+= currentUserEID
 			getUserData(currentUserEID, "role").then((role) => {
 				populateMenu(role)
 				document.getElementById("role").innerHTML = role;

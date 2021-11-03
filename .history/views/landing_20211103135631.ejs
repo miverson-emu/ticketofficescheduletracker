@@ -99,7 +99,6 @@
 
 		getCurrentlyLoggedInUser().then((currentUserEID) => {
 			console.log(currentUserEID)
-			worker_menu.find((item => item.title == "View Profile")).href+= currentUserEID
 			getUserData(currentUserEID, "role").then((role) => {
 				populateMenu(role)
 				document.getElementById("role").innerHTML = role;
