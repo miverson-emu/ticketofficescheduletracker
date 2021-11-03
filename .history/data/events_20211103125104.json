@@ -1,0 +1,30 @@
+[
+    {
+        "id": "FS00",
+        "title": "Game 1",
+        "category": "Sport",
+        "subcategory": "Football",
+        "date": "09/21/2021",
+        "hours": "5:00PM - 7:00PM",
+        "workHours": "3:00PM - 7:00PM"
+    },
+    {
+        "id": "FS01",
+        "title": "Game 2",
+        "category": "Sport",
+        "subcategory": "Football",
+        "date": "09/22/2021",
+        "hours": "5:00PM - 7:00PM",
+        "workHours": "3:00PM - 7:00PM"
+    },
+    {
+        "title": "Game 3",
+        "category": "SPORT",
+        "subcategory": "FOOTBALL",
+        "id": "FS03",
+        "date": "2021-01-01",
+        "hours": "1:01 AM - 1:02 PM",
+        "workHours": "1:01 AM - 1:02 PM"
+    }
+    
+]

@@ -1,0 +1,12 @@
+table, th, td, tr{
+	border: 1px solid black;
+	border-collapse: collapse;
+	width: 100%;
+	table-layout:fixed;
+	text-align: center;
+}
+
+#admin-actions{
+	display: flex;
+	flex-direction: ;
+}

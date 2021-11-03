@@ -1,0 +1,44 @@
+<html>
+	<head>
+
+		<link rel= "stylesheet" href = "../f/styles/table.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+		<script src = "../f/scripts/table.js"></script>
+		<script src = "../f/scripts/util.js"></script>
+	</head>
+	
+	<body>
+		<%- include("../partials/header.ejs") %>
+		<div><button onclick "location.href = '/admin/newevent'">Create New Event</button></div>
+
+		<table id = 'table'>
+			<tr>
+				<th>eventTitle</th>
+				<th>eventType</th>
+				<th>eventDate</th>
+				<th>eventHours</th>
+				<th>workHours</th>
+				<th>Actions</th>
+			</tr>
+			<tr></tr>
+		</table>
+		<%- include("../partials/footer.ejs") %>
+
+	</body>
+
+	<script>
+
+		window.onload = () => {
+			clearTable(true);
+			getJSON("data/events.json")
+			.then((events) => {
+				// console.log(events)
+				fillTable(events, true);
+			})
+
+			//get current user role
+
+		}
+	</script>
+</html>
