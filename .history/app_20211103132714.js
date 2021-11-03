@@ -60,7 +60,7 @@ app.use(session({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized:false,
     cookie: { 
-		maxAge: 1000 * 60 * 10, 
+		maxAge: 1000 * 60 * 60 * 24, 
 		secure: false, 
 		httpOnly: false
 	 },
@@ -91,7 +91,7 @@ app.get(["/", "/signin"],
 	}
 	else {
 		workers = getJSON("data/workers.json")
-		role = workers.find((worker) => worker.eid == req.session.eid)["role"]
+		role = workers.find((worker) => worker.eid == reqsession.eid)["role"]
 		res.redirect("/" + role + "/landing")
 	}
 });
@@ -150,6 +150,8 @@ app.get("/logout",
 			res.redirect("/")
 		}	
 	})
+	res.redirect("/")
+
 })
 /* =================== FUNCTIONS  =================== */
 
@@ -179,7 +181,7 @@ app.post('/validate',
 function requireLogin(req, res, next) {
 	seeRedisKeys()
 	console.log("Require Login: ", req.session.eid);
-	if(req.session.eid){
+	if(session.loggedIn){
 		// console.log("in")
 		next()
 	}
@@ -215,7 +217,7 @@ app.post("/w",
 
 app.post("/currentUser", 
 (req, res) => {
-	console.log("Get Currently logged in user: ", req.session.userEID)
+	console.log("Get Currently logged in user: ", session.userEID)
 	res.send(req.session.eid);
 })
 

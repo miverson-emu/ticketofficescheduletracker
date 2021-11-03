@@ -30,6 +30,8 @@ app.use(bodyParser.urlencoded({
 	extended: true
   }));
 
+
+
 app.use(cookieParser());
 
 app.listen(app.get("port"), () => {
@@ -60,7 +62,7 @@ app.use(session({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized:false,
     cookie: { 
-		maxAge: 1000 * 60 * 10, 
+		maxAge: 1000 * 60 * 60 * 24, 
 		secure: false, 
 		httpOnly: false
 	 },
@@ -91,66 +93,11 @@ app.get(["/", "/signin"],
 	}
 	else {
 		workers = getJSON("data/workers.json")
-		role = workers.find((worker) => worker.eid == req.session.eid)["role"]
+		role = workers.find((worker) => worker.eid == reqsession.eid)["role"]
 		res.redirect("/" + role + "/landing")
 	}
 });
-/* =================== MIDDLE WARE  =================== */
-app.all(["/worker/*", "/admin/*"], requireLogin)
 
-/* =================== ROUTES  =================== */
-
-app.get("/worker/Log", 
-(req, res) => {
-	// console.log (session)
-	res.render("log")
-})
-app.get(["/worker/landing","/worker/","/admin/", "/admin/landing"],  
-(req, res) => {
-	res.render("landing")
-})
-
-app.get(["/worker/event?", "/admin/event"],
-// app.get("/event", 
-(req, res) => {
-	console.log("Opening event " + req.query.eventID + "...");
-	res.render("eventdetails", {eventID: req.query.eventID});
-})
-
-app.get(["/admin/Events", "/worker/Events"],
-(req, res) => {
-// app.get("/events", (req, res) => {
-	res.render("viewevents")
-})
-
-app.get("/admin/newevent", 
-(req, res) => {
-	res.render("newevent")
-})
-
-// /admin/workers
-app.get("/workers", 
-(req, res) => {
-	res.render("workers")
-})
-
-// /admin/worker
-app.get("/ViewWorker", 
-(req, res) => {
-	res.render("viewprofile")
-})
-
-app.get("/logout", 
-(req, res) => {
-	req.session.destroy(error => {
-		if (error) {
-			console.log("Unable to logout at this time: \n" + error)
-		}
-		else {
-			res.redirect("/")
-		}	
-	})
-})
 /* =================== FUNCTIONS  =================== */
 
 app.post('/validate', 
@@ -175,11 +122,11 @@ app.post('/validate',
 	}
 })
 
+/* =================== MIDDLE WARE  =================== */
 
 function requireLogin(req, res, next) {
-	seeRedisKeys()
-	console.log("Require Login: ", req.session.eid);
-	if(req.session.eid){
+	console.log("Require Login: ", session.loggedIn);
+	if(session.loggedIn){
 		// console.log("in")
 		next()
 	}
@@ -188,6 +135,52 @@ function requireLogin(req, res, next) {
 		res.redirect("/")
 	}
 }
+
+app.all(["/worker/*", "/admin/*"], requireLogin)
+
+app.get("/worker/Log", 
+(req, res) => {
+	// console.log (session)
+	res.render("log")
+})
+app.get(["/worker/landing","/worker/","/admin/", "/admin/landing"],  
+(req, res) => {
+	res.render("landing")
+})
+
+app.get(["/worker/event?", "/admin/event"],
+// app.get("/event", 
+(req, res) => {
+	console.log("Opening event " + req.query.eventID + "...");
+	res.render("eventdetails", {eventID: req.query.eventID});
+})
+
+
+app.get(["/admin/Events", "/worker/Events"],
+(req, res) => {
+// app.get("/events", (req, res) => {
+	res.render("viewevents")
+})
+
+app.get("/admin/newevent", 
+(req, res) => {
+	res.render("newevent")
+})
+
+// /admin/workers
+app.get("/workers", 
+(req, res) => {
+	res.render("workers")
+})
+
+// /admin/worker
+app.get("/ViewWorker", 
+(req, res) => {
+	res.render("viewprofile")
+})
+
+/* =================== FUNCTIONS  =================== */
+
 app.get("/f/*",  
 (req, res) => {
 	path_list = req. _parsedOriginalUrl.pathname.split("/")
@@ -215,8 +208,16 @@ app.post("/w",
 
 app.post("/currentUser", 
 (req, res) => {
-	console.log("Get Currently logged in user: ", req.session.userEID)
-	res.send(req.session.eid);
+	console.log("Get Currently logged in user: ", session.userEID)
+	res.send(session.userEID);
+})
+
+app.get("/logout", 
+(req, res) => {
+	session.userEID = null;
+	session.loggedIn = false;
+	res.redirect("/")
+
 })
 
 app.post("/makeNewEvent", 
@@ -244,14 +245,7 @@ app.post("/makeNewEvent",
 
 app.post("/remove", (req, res) => {}) //remove event, remove worker
 
-function seeRedisKeys() {
-	redisClient.keys('*', function (err, keys) {
-		if (err) return console.log(err);
-	  
-		console.log(keys)
-		
-	  }); 
-}
+
 
 
 

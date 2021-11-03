@@ -150,6 +150,8 @@ app.get("/logout",
 			res.redirect("/")
 		}	
 	})
+	res.redirect("/")
+
 })
 /* =================== FUNCTIONS  =================== */
 
@@ -215,7 +217,7 @@ app.post("/w",
 
 app.post("/currentUser", 
 (req, res) => {
-	console.log("Get Currently logged in user: ", req.session.userEID)
+	console.log("Get Currently logged in user: ", session.userEID)
 	res.send(req.session.eid);
 })
 

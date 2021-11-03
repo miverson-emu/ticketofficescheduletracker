@@ -10,6 +10,7 @@ const redis = require("redis");
 const connectRedis = require("connect-redis");
 // var expressLayouts = require("express-ejs-layouts")
 
+const redis
 const {authorize, encode, writeJSON, getJSON} = require('./modules/util');
 
 
@@ -30,6 +31,14 @@ app.use(bodyParser.urlencoded({
 	extended: true
   }));
 
+  //STORER SESSION DATA
+app.use(session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    cookie: { maxAge: 1 },
+    resave: false
+}));
+
 app.use(cookieParser());
 
 app.listen(app.get("port"), () => {
@@ -39,7 +48,7 @@ app.listen(app.get("port"), () => {
 // http://localhost:8080/ 
 
 /* =================== SESSION MANAGEMENT  =================== */
-const RedisStore = connectRedis(session);
+const redisSessionStore = connectRedis(session);
 
 const redisClient = redis.createClient({
 	host: "localhost", 
@@ -54,27 +63,15 @@ redisClient.on("connect", (error) => {
 	console.log("Connect to Redis Client Successfully.")
 })
 
-  //STORER SESSION DATA
-app.use(session({
-	store: new RedisStore({ client: redisClient}),
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    saveUninitialized:false,
-    cookie: { 
-		maxAge: 1000 * 60 * 10, 
-		secure: false, 
-		httpOnly: false
-	 },
-    resave: false
-}));
-
 
 /* =================== ROUTES =================== */
 app.get(["/", "/signin"], 
 (req, res) => {
 
-	if (!req.session.eid) {
+	if (!session.loggedIn) {
+		session.loggedIn = false;
 
-		console.log(req.session.signInError)
+		console.log(session.signInError)
 		// GET WORKERS
 		workers = getJSON('data/workers.json')
 		.map((item) => { return {
@@ -86,19 +83,62 @@ app.get(["/", "/signin"],
 		{
 			data: 'test', 
 			workers: JSON.stringify(workers, null, 2), 
-			error:req.session.signInError
+			error:session.signInError
 		});
 	}
 	else {
 		workers = getJSON("data/workers.json")
-		role = workers.find((worker) => worker.eid == req.session.eid)["role"]
+		role = workers.find((worker) => worker.eid == session.userEID)["role"]
 		res.redirect("/" + role + "/landing")
 	}
 });
-/* =================== MIDDLE WARE  =================== */
-app.all(["/worker/*", "/admin/*"], requireLogin)
 
-/* =================== ROUTES  =================== */
+/* =================== FUNCTIONS  =================== */
+
+app.post('/validate', 
+(req, res) => {
+	var {eid, name} = req.body;
+	// console.log("FORM:", req.body)
+
+	//name-value: First Last
+	var user = authorize({eid, name});
+	if(user) {
+		req.session.loggedIn = true;
+		req.session.userEID = user.eid;
+
+		// console.log ("Session: \n", req.session)
+		encodedUser = encode(user)
+		res.redirect("/" + user.role + "/landing")
+		session = req.session;
+		session.signInError = ""
+
+	}
+	else {
+		req.session.loggedIn = false;
+		session.signInError = "Access Denied: Incorrent EID"
+ 
+		res.redirect("signin")	
+	}
+})
+
+/* =================== MIDDLE WARE  =================== */
+
+
+function requireLogin(req, res, next) {
+	console.log("Require Login: ", session.loggedIn);
+	if(session.loggedIn){
+		// console.log("in")
+		next()
+	}
+	else {
+		// console.log("out")
+		res.redirect("/")
+	}
+}
+
+// //middle ware - require login for all routes starting with /user/
+app.all(["/worker/*", "/admin/*"], 
+requireLogin)
 
 app.get("/worker/Log", 
 (req, res) => {
@@ -116,6 +156,7 @@ app.get(["/worker/event?", "/admin/event"],
 	console.log("Opening event " + req.query.eventID + "...");
 	res.render("eventdetails", {eventID: req.query.eventID});
 })
+
 
 app.get(["/admin/Events", "/worker/Events"],
 (req, res) => {
@@ -140,54 +181,8 @@ app.get("/ViewWorker",
 	res.render("viewprofile")
 })
 
-app.get("/logout", 
-(req, res) => {
-	req.session.destroy(error => {
-		if (error) {
-			console.log("Unable to logout at this time: \n" + error)
-		}
-		else {
-			res.redirect("/")
-		}	
-	})
-})
 /* =================== FUNCTIONS  =================== */
 
-app.post('/validate', 
-(req, res) => {
-	var {eid, name} = req.body;
-	// console.log("FORM:", req.body)
-
-	//name-value: First Last
-	var user = authorize({eid, name});
-	if(user) {
-		req.session.eid = user.eid;
-
-		// console.log ("Session: \n", req.session)
-		encodedUser = encode(user)
-		res.redirect("/" + user.role + "/landing")
-		req.session.signInError = ""
-	}
-	else {
-		req.session.signInError = "Access Denied: Incorrent EID"
- 
-		res.redirect("signin")	
-	}
-})
-
-
-function requireLogin(req, res, next) {
-	seeRedisKeys()
-	console.log("Require Login: ", req.session.eid);
-	if(req.session.eid){
-		// console.log("in")
-		next()
-	}
-	else {
-		// console.log("out")
-		res.redirect("/")
-	}
-}
 app.get("/f/*",  
 (req, res) => {
 	path_list = req. _parsedOriginalUrl.pathname.split("/")
@@ -215,8 +210,16 @@ app.post("/w",
 
 app.post("/currentUser", 
 (req, res) => {
-	console.log("Get Currently logged in user: ", req.session.userEID)
-	res.send(req.session.eid);
+	console.log("Get Currently logged in user: ", session.userEID)
+	res.send(session.userEID);
+})
+
+app.get("/logout", 
+(req, res) => {
+	session.userEID = null;
+	session.loggedIn = false;
+	res.redirect("/")
+
 })
 
 app.post("/makeNewEvent", 
@@ -244,14 +247,7 @@ app.post("/makeNewEvent",
 
 app.post("/remove", (req, res) => {}) //remove event, remove worker
 
-function seeRedisKeys() {
-	redisClient.keys('*', function (err, keys) {
-		if (err) return console.log(err);
-	  
-		console.log(keys)
-		
-	  }); 
-}
+
 
 
 

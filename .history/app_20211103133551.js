@@ -150,6 +150,8 @@ app.get("/logout",
 			res.redirect("/")
 		}	
 	})
+	res.redirect("/")
+
 })
 /* =================== FUNCTIONS  =================== */
 
