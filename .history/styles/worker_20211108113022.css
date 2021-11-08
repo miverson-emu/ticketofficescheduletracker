@@ -1,0 +1,11 @@
+.error{
+	display:none;
+	color: red;
+	font-size: 15;
+	vertical-align: middle;
+	width: 15px;
+	margin: 3;
+}
+input{
+	border: 1px solid black;
+}

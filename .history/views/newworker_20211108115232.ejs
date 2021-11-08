@@ -1,0 +1,107 @@
+<html>
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+	<script src="../f/scripts/util.js"></script>
+	<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+	<link rel="stylesheet" href="../f/styles/eventdetails.css">
+	<link rel = "stylesheet" href = "/f/styles/worker.css">
+	<link rel = "stylesheet" href = "/f/styles/inputWithPrefix.css">
+
+
+</head>
+
+<body>
+	<%- include("../partials/header.ejs") %>
+
+		<main>
+			<container>
+				<h2>Add Worker</h3>
+					<hr>
+
+					<div class="flex-section-column">
+						<div>
+							<div class="label-font-ml0">
+								First Name
+								<i id="firstname-error" class="error fas fa-exclamation-circle"></i>
+							</div>
+							<div>
+								<input type="text" name="firstname">
+							</div>
+						</div>
+
+						<div>
+							<div class="label-font-ml0">
+								Last Name
+								<i id="lastname-error" class="error fas fa-exclamation-circle"></i>
+							</div>
+							<div>
+								<input type="text" name="lastname">
+							</div>
+						</div>
+						<div>
+							<div class="label-font-ml0">
+								EID
+								<i id="eid-error" class="error fas fa-exclamation-circle"></i>
+
+							</div>
+							<div>
+								<span class="input" >
+									<span id="prefix">E</span>
+									<input name="eid" id = "eid" value="" type="number" min="0" step="1" >
+								</span>
+								<!-- <input type="text" name="eid"> -->
+							</div>
+						</div>
+						<div>
+							<div class="label-font-ml0">
+								
+								Role
+								<i id="role-error" class="error fas fa-exclamation-circle"></i>
+							</div>
+							<div>
+								<select name="role">
+									<option disabled selected>-- Select a role --</option>
+								</select>
+							</div>
+						</div>
+						<div>
+							<div class="label-font-ml0">
+								Email
+								<i id="email-error" class="error fas fa-exclamation-circle"></i>
+								<span id = "email-exists-error"
+							</div>
+							<div>
+								<input type="text" name="email">
+							</div>
+						</div>
+
+					</div>
+
+					<hr>
+					<div class="flex-section-col">
+						<button onclick="addWorker();">Add Worker</button>
+					</div>
+			</container>
+		</main>
+		<%- include("../partials/footer.ejs") %>
+
+</body>
+<script>
+	window.onload = () => {
+		inputs = [...document.getElementsByTagName("INPUT")]
+		inputs.map((input) => {
+			["keyup", "change"].forEach((event) => {
+				input.addEventListener(event, () => {
+					document.getElementById(input.name + "-error").style.display = "none";
+				})
+			})
+		});
+
+		populateSelector()
+
+	}
+</script>
+
+</html>

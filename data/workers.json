@@ -21,5 +21,12 @@
         "eventsAvailable": [
             "FS1"
         ]
+    },
+    {
+        "firstname": "Sample",
+        "lastname": "Worker",
+        "eid": "0004",
+        "email": "sw@email.com",
+        "role": "worker"
     }
 ]

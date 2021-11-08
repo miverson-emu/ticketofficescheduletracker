@@ -1,0 +1,34 @@
+[
+    {
+        "firstname": "Morgan",
+        "lastname": "Iverson",
+        "eid": "E0001",
+        "email": "mi@mail.com",
+        "role": "worker",
+        "eventsAvailable": [
+            "FS00",
+            "FS01",
+            "FS03",
+            "FS04"
+        ]
+    },
+    {
+        "firstname": "Chris",
+        "lastname": "LaReau",
+        "eid": "E0002",
+        "email": "cl@mail.com",
+        "role": "admin",
+        "eventsAvailable": [
+            "FS1"
+        ]
+    },
+    ,
+    {
+        "firstname": "Sample",
+        "lastname": "Worker",
+        "eid": "E0003",
+        "email": "sw@mail.com",
+        "role": "worker",
+        "eventsAvailable": []]
+    }
+]

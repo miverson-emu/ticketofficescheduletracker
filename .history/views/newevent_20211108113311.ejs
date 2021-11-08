@@ -1,0 +1,102 @@
+<html>
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+		integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+	<link rel="stylesheet" href="/f/styles/newevent.css">
+	<link rel="stylesheet" href="/f/styles/newevent.css">
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+	<script src="../f/scripts/util.js"></script>
+
+</head>
+
+<body>
+	<%- include("../partials/header.ejs") %>
+	<main>
+		<container>
+			<h2>Create New Event</h3>
+				<form id="form">
+
+					<label for="title">Event Title</label>
+					<i class="error fas fa-exclamation-circle" id="title-error"></i>
+					<label id="title-exists-error" class="error">This Event ID already exists.</label>
+					<input type="text" name="title">
+					<br>
+
+					<h3>Event Classification</h3>
+
+					<label for="category">Category</label>
+					<i class="error fas fa-exclamation-circle" id="category-error"></i>
+					<select name="category" id="category">
+						<option disabled selected value="">-- Select an Event Category --</option>
+					</select>
+
+					<label for="subcategory">Subcategory</label>
+					<i class="error fas fa-exclamation-circle" id="subcategory-error"></i>
+					<select id="subcategory" name="subcategory">
+						<option disabled selected value="">-- Select an Event Category --</option>
+					</select>
+
+					<label for="id">Event ID</label>
+					<i class="error fas fa-exclamation-circle" id="id-error"></i>
+					<label id="id-exists-error" class="error">This Event ID already exists.</label>
+					<span class="input">
+						<span id="prefix">__</span>
+						<input id="id" name="id" disabled value="" type="number" oninput="formatIDNumber(this, 2)" min="0"
+							step="1">
+					</span>
+
+					<h3>Event Time</h3>
+
+					<label for="date">Event Date</label>
+					<i class="error fas fa-exclamation-circle" id="date-error"></i>
+					<input name="date" type="date">
+
+					<br>
+					<div class="error" id="hours-error"><label>Event start time must be earlier than event end
+							time.</label></div>
+					<label for="hours-start">Event Start Time</label>
+					<i class="error fas fa-exclamation-circle" id="hours-start-error"></i>
+					<input name="hours-start" id="hours-start" type="time">
+
+
+					<label for="hours-end">Event End Time</label>
+					<i class="error fas fa-exclamation-circle" id="hours-end-error"></i>
+					<input name="hours-end" id="hours-end" type="time">
+
+					<h3>Event Worker Details</h3>
+					<div class="error" id="workHours-error"><label>Worker call time must be earlier than event worker
+							end time.</label></div>
+
+					<label for="workHours-start">Worker Call Time</label>
+					<i class="error fas fa-exclamation-circle" id="workHours-start-error"></i>
+					<input name="workHours-start" id="workHours-start" type="time">
+
+					<label for="workHours-end">Worker End Time</label>
+					<i class="error fas fa-exclamation-circle" id="workHours-end-error"></i>
+					<input name="workHours-end" id="workHours-end" type="time">
+
+					<br>
+
+					<center>
+						<input id="submit" style="align-self: center" type="submit" onclick="validation()"" = " Create
+							New Event">
+					</center>
+				</form>
+
+		</container>
+	</main>
+
+	<%- include("../partials/footer.ejs") %>
+
+</body>
+
+<script src="../f/scripts/newevent.js"></script>
+
+</html>

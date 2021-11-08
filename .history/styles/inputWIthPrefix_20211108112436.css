@@ -1,0 +1,18 @@
+.input input{
+	display: inline;
+}
+.input{
+	border: 1px solid black;
+	border-radius: 5px;
+	padding: 3px 10px;
+	margin-bottom: 15px;
+	margin-top: 5px;
+}
+#eid{
+	border:none
+}
+#id-prefix{
+	color:grey;
+	font-weight: bold;
+	font-size: 12px;
+}
