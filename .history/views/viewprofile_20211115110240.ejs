@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+		<script src = "../f/scripts/util.js"></script>
+		<link rel = "stylesheet" href = "/f/styles/eventdetails.css">
+		<link rel = "stylesheet" href = "/f/styles/worker.css">
+
+	</head>
+	<body>
+		<%- include("../partials/header.ejs") %>
+
+		<main>
+			<container>
+				<h2>View Worker Profile</h3>
+
+
+			
+		<div class = "big-font bold-font" >
+			<span id = "firstname">First</span> <span id = "lastname">Last</span>
+		</div>
+
+		<div class = "small-font" id = "eid">EiD</div>
+		<div class = "small-font" id = "role">EiD</div>
+		<div class = "small-font" id = "datejoined">Date Joined</div>
+		<hr>
+		<form>
+
+		</form>
+
+
+		<div class = "flex-section-column">
+			<div>
+				<div class = "label-font-ml0">
+					First Name
+					<i id="firstname-error" class="error fas fa-exclamation-circle"></i>
+				</div>
+				<div>
+					<input type = "text" name = "firstname"> 
+				</div>
+			</div>
+
+			<div>
+				<div class = "label-font-ml0">
+					Last Name
+				</div>
+				<div>
+					<input type = "text" name = "lastname"> 
+				</div>
+			</div>
+			<div>
+				<div class = "label-font-ml0">
+					EID
+				</div>
+				<div>
+					<input type = "text" name = "eid"> 
+				</div>
+			</div>
+			<div>
+				<div class = "label-font-ml0">
+					Role
+				</div>
+				<div>
+					<select name = "role">
+					</select>
+				</div>
+			</div>
+			<div>
+				<div class = "label-font-ml0">
+					Email
+				</div>
+				<div>
+					<input type = "text" name = "email"> 
+				</div>
+			</div>
+		</div>
+		
+		
+
+		<hr>
+		<div class = "flex-section-col">
+		<button onclick = "openEditing(this);">Edit Worker Details</button>
+
+		<div id = "admin-actions">
+		<button onclick = "removeWorker()">Remove Worker</button>
+		</div>
+		</div>
+		<hr>
+		<div class = "flex-section-col" id = "workersAvailableDisplay">
+			<div><i class="fas fa-users"></i>Events Available</div>
+		<table>
+			<tr>
+				<td id = "column1"></td>
+				<td id = "column2"></td>
+			</tr>
+		</table>
+		</div>
+		</container>
+		</main>
+		<%- include("../partials/footer.ejs") %>
+
+	</body>
+
+	<script src = "/f/scripts/profile.js">
+	</script>
+</html>

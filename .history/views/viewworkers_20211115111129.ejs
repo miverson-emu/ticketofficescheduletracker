@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+		<script src = "../f/scripts/util.js"></script>
+		<script src = "../f/scripts/workers.js"></script>
+		<link rel = "stylesheet" href = "../f/styles/table.css"></link>
+	</head>
+	<body>
+		<%- include("../partials/header.ejs") %>
+
+		<h2>View All Workers</h2>
+		<div id = "admin-actions"></div>
+
+		<table>
+			<tr>
+				<th>Last Name</th>
+			<th>First Name </th>
+			<th>Role</th>
+			<th>Email</th>
+			<th>Actions</th>
+		</tr>
+		</table>
+		<%- include("../partials/footer.ejs") %>
+	</body>
+	<script>
+		window.onload = () => {
+			getJSON("data/workers.json")
+			.then((workers) => {
+
+				table = [...document.getElementsByTagName("tbody")][0]
+
+				workers.map(worker => {
+					table.innerHTML+=worker_table_row(worker);
+				})
+			})
+
+			getCurrentlyLoggedInUser().then((eid) => {
+				getUserData(eid, "role").then((role) => {
+					console.log(role)
+					if(role == "admin") {
+						admin_actions_viewworkers.forEach(action => {
+							document.getElementById("admin-actions").innerHTML+= action
+							
+						});
+						document.getElementById("admin-actions").style.display = "flex"
+					}
+				});
+			});
+		}
+
+		function worker_table_row(worker) {
+			const { firstname, lastname, role, email, eid } = worker
+
+			return "<tr>"  + 
+				"<td>" + lastname + "</td>" + 
+				"<td>" + firstname + "</td>" + 
+				"<td>" + role + "</td>" + 
+				"<td>" + email + "</td>" + 
+				"<td><button onclick = \"location.href = '/admin/viewworker?eid=" + eid + "'\">View Profile</button></td>" + 
+			"</tr>"
+		}
+
+		admin_actions_viewworkers = [
+			"<button onclick = location.href = \"/admin/addworker\"\">Add New Worker</button>", 
+			"<button onclick = \"location.href = \"/admin/uploadworkers\"\">Add Multiple Workers</button>", 
+		]
+		
+	</script>
+</html>

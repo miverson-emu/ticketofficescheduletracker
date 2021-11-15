@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<script>
+
+			function populateList(data) {
+				const selector = document.getElementById("worker-name")
+				data.forEach(item => {
+					selector.innerHTML+= selectOption(item.firstname + " " + item.lastname, item.lastname + ", " + item.firstname)
+				})
+			}
+
+			function selectOption(value, display) {
+				return "<option value =\"" + value  + "\">" + display + "</option>"
+			}
+
+		</script>
+	</head>
+
+<body>
+
+	<%- include("../partials/header.ejs") %>
+	<% var workers = workers %>
+	<script>
+		window.onload = () => {
+				populateList(<%- workers %>)
+			}
+	</script>
+<h3 style = "margin-bottom: 5px">Login: </h3>
+<div style = "color:red"><%- error%></div>
+
+<form action = "/validate" method = "POST">
+	<select name = 'name' id = "worker-name">
+		<option disabled selected> -- Select your Name</option>
+	</select>
+
+
+	<input name = 'eid' type = text value = "E">
+
+	<input type = 'submit'>
+</form>
+
+<input id = "combo"
+</body>
+</html>

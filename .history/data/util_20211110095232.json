@@ -1,0 +1,37 @@
+{
+	"eventCategories": [
+		{
+			"category": "SPORT", 
+			"subcategories": [
+				{
+					"name": "FOOTBALL", 
+					"id": "FS"
+				}, 
+				{
+					"name": "MEN'S BASKETBALL", 
+					"id": "MBB"
+				}, 
+				{
+					"name": "WOMEN'S BASKETBALL", 
+					"id": "WBB"
+				}
+			]
+		}, 
+		{
+			"category": "CONCERT", 
+			"subcategories": [
+				{
+					"name": "MUSIC", 
+					"id": "MS"
+				}
+			]
+		}
+	], 
+	"roles": [
+		"worker", 
+		"admin"
+	], 
+	"navigation": {
+		
+	}
+}

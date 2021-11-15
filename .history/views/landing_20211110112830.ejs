@@ -1,0 +1,114 @@
+<html>
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+	<!-- <script src = "../f/scripts/util.js"></ .script> -->
+	<script type = "module" src = "../f/modules/util.js"></script>
+	<script>
+
+		// STORE IN APP JSON 
+		admin_menu = [
+			
+			{
+				"active": true,
+				"title": "Events", 
+				"description": "View and Edit Event Information", 
+				"href": "Events"
+			},
+			{
+				"active": false,
+				"title": "Availability", 
+				"description": "View Workers avaialable for all events", 
+				"href": "#"
+			},
+			{
+				"active": true,
+				"title": "Workers", 
+				"description": "View and Modify Worker Information",
+				"href": "workers"
+			}
+		]
+
+		worker_menu = [
+			{
+				"active": true,
+				"title": "View Profile", 
+				"description": "View and Edit your information",
+				
+				"href" : "viewworker?eid="
+			}, 
+			{
+				"active": true,
+				"title": "Log Availability", 
+				"description": "View and Modify your event availability", 
+				"href" : "Log"
+			}
+		]
+		
+		function populateMenu(role) {
+			const menu = document.getElementById("menu")
+				if (role == "worker") {
+					worker_menu.forEach(item => {
+						if (item.active) {
+							console.log(item)
+
+							
+							menu.innerHTML+= listItem(item)	
+						}
+					});
+				}
+				else if (role == "admin") {
+					admin_menu.forEach(item => {
+						if (item.active) menu.innerHTML+= listItem(item)	
+					});
+				}	
+		}
+
+		function listItem(item) {
+			return "<li><a href = '" + appendCurrentURL(item.href) + "'>" + item.title + " (" + item.description + ")</a></li>"
+		}
+
+		
+	
+	</script>
+
+
+</head>
+
+<body>
+
+
+	<div>
+		<h2>
+			Welcome <span id = "name"></span>!
+		</h2>
+		<div>Role: <span id = "role"></span></div>
+	</div>
+	
+
+	<br>
+	<div>
+		<ul id = "menu">
+		</ul>
+	</div>
+<%- include("../partials/footer.ejs") %>
+</body>
+
+<script>
+	window.onload = () => {
+
+		getCurrentlyLoggedInUser().then((currentUserEID) => {
+			console.log(currentUserEID)
+			worker_menu.find((item => item.title == "View Profile")).href+= currentUserEID
+			getUserData(currentUserEID, "role").then((role) => {
+				populateMenu(role)
+				document.getElementById("role").innerHTML = role;
+			})
+			getUserData(currentUserEID, "firstname").then((name) => {
+				document.getElementById("name").innerHTML = name;
+			})
+		})
+	}
+</script>
+</html>

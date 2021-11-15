@@ -1,0 +1,128 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+		<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+		<link rel = "stylesheet" href = "../f/styles/eventdetails.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+		<script src = "../f/scripts/util.js"></script>
+
+	</head>
+	<body>
+		<%- include("../partials/header.ejs") %>
+
+
+		<main>
+			<container>
+
+			
+		<div class = "big-font bold-font" ><span id = "title">Title</span> - <span id = "id">ID</span></div>
+		<div class = "small-font" ><span id = "category">Category</span> - <span id = "subcategory">subcategory</span></div>
+		<hr>
+		<div class = "flex-section-row">
+			<div>
+				<div class = "label-font-ml40">
+					Event Date
+				</div>
+				<div>
+					<i class="fas fa-calendar"></i><span id = "date">MM/DD/YYYY</span>
+				</div>
+			</div>
+
+			<div>
+				<div class = "label-font-ml40">
+					Event Hours
+				</div>
+				<div>
+					<i class="fas fa-clock"></i><span id = "hours">HH:MM-HH:MM</span>
+				</div>
+			</div>
+			<div>
+				<div class = "label-font-ml40">
+					Work Hours
+				</div>
+				<div>
+					<i class="fas fa-user-clock"></i><span id = "workHours">HH:MM-HH:MM</span>
+				</div>
+			</div>
+
+		</div>
+		
+		<div class = 'admin-actions>
+			
+		<hr>
+		<div class = "flex-section-col" id = "workersAvailableDisplay">
+			<div><i class="fas fa-users"></i>Workers Available</div>
+		<table>
+			<tr>
+				<td id = "column1"></td>
+				<td id = "column2"></td>
+			</tr>
+		</table>
+		</div>
+	</container>
+		</main>
+
+		<%- include("../partials/footer.ejs") %>
+		
+		<% eventID = eventID %>
+	</body>
+
+	<script>
+
+		window.onload = () => {
+			const eventID = "<%=eventID%>";
+			console.log(eventID);
+			getEventDetails(eventID)
+			.then((eventDetails) => {
+				console.log(eventDetails)
+
+				//SET DETAILS FOR DISPLAY
+				for (const detail in eventDetails) {
+					elm = null;
+					try{
+						elm = document.getElementById(detail);
+						elm.innerHTML = eventDetails[detail]
+					}
+					catch(e){
+						console.log("No DOM element found with id: ", detail)
+					}
+				}
+
+
+				getCurrentlyLoggedInUser()
+				.then((currentUserEID) => {
+					getUserData(currentUserEID, "role")
+						.then((role) => {
+							console.log(role)
+
+
+							if(role == "admin"){
+								getWorkersAvailableForEvent(eventID)
+									.then(workersAvailable => {
+										workersAvailable.sort()
+										// workersAvailable.map((worker => worker + "<br>"))
+										// console.log(workersAvailable);
+
+										const m = Math.floor(workersAvailable.length/2);
+										const [col1,col2] = [workersAvailable.slice(0,m), workersAvailable.slice(m,workersAvailable.length)];
+
+										document.getElementById("column1").innerHTML = col1.join("<br>")
+										document.getElementById("column2").innerHTML = col2.join("<br>")
+									})
+							}
+							
+							else {
+								document.getElementById("workersAvailableDisplay").style.display = "none";
+							}
+						})
+				})
+
+				
+
+			})
+
+		}
+	</script>
+
+</html>

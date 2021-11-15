@@ -1,0 +1,94 @@
+<html>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+	<script src = "../f/scripts/class.js"></script>
+	<script src = "../f/scripts/util.js"></script>
+	<script src = "../f/scripts/table.js"></script>
+
+<style>
+	table, td, th{
+		border: 1px solid black;
+		border-collapse: collapse;
+	}
+</style>
+
+<body>
+	<%- include("../partials/header.ejs") %>
+
+	<% var userEID = userEID %>
+	<script>
+
+		//EVENTS
+	window.onload = () => {
+		clearTable();
+		//GET CURRENTLY LOGGED IN USER
+		
+			 getTicketOfficeEvents()
+				.then((events) => {
+					fillTable(events)
+				})
+				.then(() => {
+					const eventCheckboxes = [...document.getElementsByClassName('sa')]
+					
+					getCurrentUserData("eventsAvailable")
+					.then ((currentWorkerAvailability) => {
+						
+						eventCheckboxes.forEach(checkbox => {
+							//MARK EVENTS THE WORKER IS AVAIABLE FOR
+							checkbox.checked = currentWorkerAvailability.includes(checkbox.id);
+
+							//MODIFY DATA IF USER CHANGES
+							checkbox.onchange = () => {
+								currentWorkerAvailability = eventCheckboxes.filter(item => item.checked).map(item => item.id);
+
+								writeAvailability(
+									{"eid": eid,
+									 "eventsAvailable": currentWorkerAvailability
+									}
+								)
+								.then ((res) => {
+									console.log(res)
+									document.getElementById("status").innerHTML = res;
+								})
+							}
+						})
+					})
+				})	
+		}
+
+	</script>
+
+<div id = "status"></div>
+	<table id = 'table'>
+		<tr>
+			<th>Available</th>
+			<th>eventTitle</th>
+			<th>eventType</th>
+			<th>eventDate</th>
+			<th>eventHours</th>
+			<th>workHours</th>
+		</tr>
+	</table>
+
+	<%- include("../partials/footer.ejs") %>
+
+</body>
+
+<script>
+	const SUCCESS = 1
+
+
+
+
+	///STUDENT
+	function log_availability(){
+		availability = [...document.getElementsByClassName('sa')]
+		events = availability.map(item => {
+			return {
+				"id": item.id, 
+				"checked": item.checked
+			}
+		})
+	}
+</script>
+</html>
